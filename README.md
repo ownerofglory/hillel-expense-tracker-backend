@@ -7,3 +7,4 @@ The application serves as a personal finance management tool, allowing users to 
 ## Contribute
 
 This repository is part of the **Java Pro** course by **Hillel IT School** and is primarily intended for student contributions. While external contributions are welcome, students are encouraged to contribute as part of their learning experience. 
+Please get familiar with [contributing guidelines](./CONTRIBUTE.md)
