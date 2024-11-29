@@ -1,0 +1,25 @@
+@startuml
+
+cloud "On-premise" {
+rectangle DEV {
+    node container1  {
+     component ExpenseTracker1
+    }
+
+    node container2  {
+     component ExpenseTracker2
+    }
+}
+
+rectangle PROD {
+    node container3  {
+     component ExpenseTracker3
+    }
+
+    node container4  {
+     component ExpenseTracker4
+    }
+}
+}
+
+@enduml

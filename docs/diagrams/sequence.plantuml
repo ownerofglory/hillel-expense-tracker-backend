@@ -1,0 +1,17 @@
+@startuml
+
+actor User
+
+participant ExpenseTracker
+database ExpenseDB as DB
+entity "GPT-4o" as AI
+
+User -> ExpenseTracker: "Log expense (e.g. Coffee $3.45)"
+ExpenseTracker -> AI: categorize
+AI -> ExpenseTracker: return {category: "Food and drinks", amount: "3.45"}
+ExpenseTracker -> DB: Insert Expense entry
+DB -> ExpenseTracker: insert success
+ExpenseTracker -> User: expense logged
+
+
+@enduml

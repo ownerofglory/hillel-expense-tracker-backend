@@ -1,0 +1,25 @@
+@startuml
+
+actor User
+actor Admin
+
+rectangle "ExpenseTracker" {
+    (Registration/Login) as UC1
+    (Expense entry) as UC2
+    (View expenses)  as UC3
+    (Set budget)  as UC4
+    (Create report)  as UC5
+    (Manage categories)  as UC6
+    (Manage users)  as UC7
+}
+
+User -> UC1
+User -> UC2
+User -> UC3
+User -> UC4
+User -> UC5
+User -> UC6
+
+Admin -> UC7
+
+@enduml
