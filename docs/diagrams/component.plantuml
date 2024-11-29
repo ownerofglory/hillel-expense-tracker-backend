@@ -1,0 +1,38 @@
+@startuml
+
+() "JPA"
+() "HTTP"
+
+package service {
+    [UserService] as US
+    [ExpenseService] as ES
+}
+
+
+package "controller" {
+    [UserController] as UC
+    [ExpenseController] as EC
+}
+
+package repository {
+    [UserRepository] as UR
+    [ExpenseRepository] as ER
+}
+
+database MySQL {
+}
+
+
+UC .. HTTP
+EC .. HTTP
+
+EC - ES
+UC - US
+ES - ER
+US - UR
+
+
+UR - JPA
+ER - JPA
+JPA - MySQL
+@enduml

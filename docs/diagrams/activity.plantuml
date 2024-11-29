@@ -1,0 +1,24 @@
+@startuml
+
+start
+:Categorize expense;
+if (Is text not empty) then (yes)
+:Feed the text as prompt to GPT-4o;
+:Read category from DB;
+    if (category is not found) then (yes)
+    :Create new category;
+    :Store created category in DB;
+    endif
+
+:Create expense object;
+:Store expense in DB;
+
+else (no)
+    :Return error message;
+endif
+:Return status to user;
+
+
+stop
+
+@enduml

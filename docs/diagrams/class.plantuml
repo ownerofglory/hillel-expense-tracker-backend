@@ -1,0 +1,68 @@
+@startuml
+
+class UserRepository {
+    getId(id: Number): User
+}
+
+class MySQLUserRepo {
+ getId(id: Number): User
+}
+
+class Model {
+    + id
+}
+
+class UserProfile {
+
+}
+
+class User {
+    + id
+    + firstName
+    + lastName
+    + email
+    + password
+}
+
+class Expense {
+    + id
+    + amount: double
+    + descript
+    + userId
+    + categoryId
+}
+
+class Category {
+    + id
+    + name
+    + userId
+}
+
+class Budget {
+    + id
+    + amount
+    + categoryId
+    + userId
+}
+
+class Report {
+    + id
+    + start: Date
+    + end: Date
+    + userId
+}
+
+UserRepository <|.. MySQLUserRepo
+
+User --|> Model
+
+User "1" o--  "*" Expense
+User "1" --  "*" UserProfile
+Category "1" o-- "*" Expense
+
+Budget "*" --o "1" Category
+Budget "*" --o "1" User
+Report "*" --o "1" User
+
+
+@enduml

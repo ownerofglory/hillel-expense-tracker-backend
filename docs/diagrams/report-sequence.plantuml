@@ -1,0 +1,18 @@
+@startuml
+
+actor User
+
+participant ExpenseTracker
+database ExpenseDB as DB
+entity "GPT-4o" as AI
+
+User -> ExpenseTracker: Create a weekly report
+ExpenseTracker -> DB: Select expenses for last week
+DB -> ExpenseTracker: Expenses for last week
+ExpenseTracker -> ExpenseTracker: Convert data model
+ExpenseTracker -> AI: Suggest improvement, Report
+AI -> ExpenseTracker: return suggestion
+ExpenseTracker -> User: Report, Suggestion
+
+
+@enduml
