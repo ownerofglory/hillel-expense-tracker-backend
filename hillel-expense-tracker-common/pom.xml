@@ -7,8 +7,6 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <packaging>jar</packaging>
-
     <artifactId>hillel-expense-tracker-common</artifactId>
     <name>hillel-expense-tracker-common</name>
 

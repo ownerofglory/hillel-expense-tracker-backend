@@ -12,6 +12,7 @@
 
     <modules>
         <module>hillel-expense-tracker-common</module>
+        <module>hillel-expense-tracker-service</module>
     </modules>
 
     <properties>
