@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>ua.ithillel.expensetracker</groupId>
-        <artifactId>hillel-expense-tracker-common</artifactId>
+        <artifactId>hillel-expense-tracker</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
@@ -15,5 +15,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>ua.ithillel.expensetracker</groupId>
+            <artifactId>hillel-expense-tracker-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 </project>
