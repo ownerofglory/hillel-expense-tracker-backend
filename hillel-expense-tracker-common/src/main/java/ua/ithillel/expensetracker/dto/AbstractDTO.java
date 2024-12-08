@@ -1,4 +1,4 @@
-package ua.ithillel.expensetracker.model;
+package ua.ithillel.expensetracker.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public abstract class AbstractModel {
+public abstract class AbstractDTO {
     private Long id;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
