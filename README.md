@@ -1,5 +1,7 @@
 # Hillel Expense Tracker
 
+[![Test pipeline](https://github.com/ownerofglory/hillel-expense-tracker-backend/actions/workflows/test-pipeline.yaml/badge.svg)](https://github.com/ownerofglory/hillel-expense-tracker-backend/actions/workflows/test-pipeline.yaml)
+
 This Expense Tracker project is designed to help students of **Hillel IT School** gain practical experience with core Java technologies such as `Spring Boot`, `Hibernate`, `JPA`, and web development. 
 
 The application serves as a personal finance management tool, allowing users to log expenses, set budgets, and generate insightful reports.
