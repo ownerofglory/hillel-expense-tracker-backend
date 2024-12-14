@@ -21,6 +21,10 @@
         <maven.compiler.target>22</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <org.mapstruct.version>1.6.3</org.mapstruct.version>
+        <org.projectlombok.version>1.18.36</org.projectlombok.version>
+        <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+        <org.mockito.version>5.14.2</org.mockito.version>
+        <org.junit.jupiter.version>5.11.3</org.junit.jupiter.version>
     </properties>
 
     <dependencyManagement>
@@ -28,25 +32,25 @@
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-api</artifactId>
-                <version>5.11.3</version>
+                <version>${org.junit.jupiter.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-core</artifactId>
-                <version>5.14.2</version>
+                <version>${org.mockito.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-                <version>1.18.36</version>
+                <version>${org.projectlombok.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct</artifactId>
-                <version>1.6.3</version>
+                <version>${org.mapstruct.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -64,7 +68,7 @@
                             <path>
                                 <groupId>org.projectlombok</groupId>
                                 <artifactId>lombok</artifactId>
-                                <version>1.18.36</version>
+                                <version>${org.projectlombok.version}</version>
                             </path>
                             <path>
                                 <groupId>org.mapstruct</groupId>
@@ -74,7 +78,7 @@
                             <path>
                                 <groupId>org.projectlombok</groupId>
                                 <artifactId>lombok-mapstruct-binding</artifactId>
-                                <version>0.2.0</version>
+                                <version>${lombok-mapstruct-binding.version}</version>
                             </path>
                         </annotationProcessorPaths>
                     </configuration>
