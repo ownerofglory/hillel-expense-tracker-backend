@@ -15,6 +15,7 @@
         <module>hillel-expense-tracker-service</module>
         <module>hillel-expense-tracker-client</module>
         <module>hillel-expense-tracker-dao</module>
+        <module>hillel-expense-tracker-repo</module>
     </modules>
 
     <properties>
