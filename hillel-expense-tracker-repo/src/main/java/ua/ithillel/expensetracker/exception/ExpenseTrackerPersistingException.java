@@ -1,4 +1,4 @@
-package ua.ithillel.expensetracker.repo.exception;
+package ua.ithillel.expensetracker.exception;
 
 /*
     Custom exception for persisting errors in the Expense Tracker application.
