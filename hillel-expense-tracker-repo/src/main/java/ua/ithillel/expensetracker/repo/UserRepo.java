@@ -1,13 +1,13 @@
 package ua.ithillel.expensetracker.repo;
 
 import ua.ithillel.expensetracker.model.User;
-import ua.ithillel.expensetracker.repo.exception.ExpenseTrackerPersistingException;
+import ua.ithillel.expensetracker.exception.ExpenseTrackerPersistingException;
 
 import java.util.Optional;
 
 public interface UserRepo {
 
-    Optional<User> findById(Long id) throws ExpenseTrackerPersistingException;
+    Optional<User> find(Long id) throws ExpenseTrackerPersistingException;
 
     Optional<User> findByEmail(String email) throws ExpenseTrackerPersistingException;
 
