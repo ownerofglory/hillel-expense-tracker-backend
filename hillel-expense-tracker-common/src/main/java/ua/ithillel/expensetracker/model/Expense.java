@@ -10,8 +10,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Expense extends AbstractModel {
+
     private double amount;
+
     private String description;
+
     private ExpenseCategory category;
+
     private User user;
+
 }
