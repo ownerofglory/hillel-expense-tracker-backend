@@ -15,7 +15,6 @@ class UserMapperTest {
         assertEquals(TestData.FIRST_NAME, testUserDTO.getFirstname());
         assertEquals(TestData.LAST_NAME, testUserDTO.getLastname());
         assertEquals(TestData.EMAIL, testUserDTO.getEmail());
-        assertEquals(TestData.TAGS, testUserDTO.getTags());
     }
 
     @Test
@@ -26,6 +25,5 @@ class UserMapperTest {
         assertEquals(TestData.FIRST_NAME, testUser.getFirstname());
         assertEquals(TestData.LAST_NAME, testUser.getLastname());
         assertEquals(TestData.EMAIL, testUser.getEmail());
-        assertEquals(TestData.TAGS, testUser.getTags());
     }
 }

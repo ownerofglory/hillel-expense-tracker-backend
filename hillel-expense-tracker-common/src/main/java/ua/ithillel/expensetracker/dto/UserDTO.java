@@ -16,5 +16,4 @@ public class UserDTO extends AbstractDTO {
     private String firstname;
     private String lastname;
     private String email;
-    private Set<ExpenseTag> tags;
 }

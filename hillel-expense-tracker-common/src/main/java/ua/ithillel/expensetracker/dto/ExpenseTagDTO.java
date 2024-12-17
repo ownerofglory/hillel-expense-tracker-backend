@@ -10,8 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ExpenseTagDTO extends AbstractDTO{
-
     private String name;
-
     private String hexCode;
+    private String colorName;
 }

@@ -12,12 +12,10 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User extends AbstractModel{
-
     private String firstname;
-
     private String lastname;
-
     private String email;
-
     private Set<ExpenseTag> tags;
+    private Set<ExpenseCategory> categories;
+    private Set<Expense> expenses;
 }
