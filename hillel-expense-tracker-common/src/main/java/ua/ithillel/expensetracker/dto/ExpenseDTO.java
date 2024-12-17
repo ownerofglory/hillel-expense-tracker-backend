@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -14,4 +16,5 @@ public class ExpenseDTO extends AbstractDTO {
     private String description;
     private ExpenseCategoryDTO category;
     private UserDTO user;
+    private Set<ExpenseTagDTO> tags;
 }
