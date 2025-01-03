@@ -1,9 +1,8 @@
 <persistence xmlns="https://jakarta.ee/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.0">
 
-    <persistence-unit name="expense-tracker-pu">
+    <persistence-unit name="expense-tracker-test-pu">
         <description>Expense Tracker Hibernate</description>
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-<!--        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>-->
 
         <class>ua.ithillel.expensetracker.model.UserEntity</class>
         <class>ua.ithillel.expensetracker.model.User</class>
@@ -12,10 +11,8 @@
         <class>ua.ithillel.expensetracker.model.ExpenseTag</class>
 
         <properties>
-            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/hilleldb" />
-            <property name="jakarta.persistence.jdbc.user" value="user1" />
-            <property name="jakarta.persistence.jdbc.password" value="hillel" />
+            <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver" />
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:mem:test;INIT=runscript from 'classpath:init.sql'" />
 
             <property name="hibernate.show_sql" value="true" />
 

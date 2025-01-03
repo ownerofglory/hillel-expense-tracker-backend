@@ -21,7 +21,8 @@ public class User extends AbstractModel {
     private String lastname;
     private String email;
 
-//    private Set<ExpenseTag> tags;
+    @Transient
+    private Set<ExpenseTag> tags;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
