@@ -29,6 +29,9 @@
         <org.junit.jupiter.version>5.11.3</org.junit.jupiter.version>
         <mysql.version>9.1.0</mysql.version>
         <h2.version>2.3.232</h2.version>
+        <hibernate.version>6.6.4.Final</hibernate.version>
+        <jpa.version>3.2.0</jpa.version>
+        <eclipselink.version>4.0.5</eclipselink.version>
     </properties>
 
     <dependencyManagement>
@@ -66,6 +69,21 @@
                 <artifactId>h2</artifactId>
                 <version>${h2.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate.orm</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.persistence</groupId>
+                <artifactId>jakarta.persistence-api</artifactId>
+                <version>${jpa.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.eclipse.persistence</groupId>
+                <artifactId>eclipselink</artifactId>
+                <version>${eclipselink.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
