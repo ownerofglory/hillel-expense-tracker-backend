@@ -17,8 +17,6 @@ public class UserMySqlJpaRepo implements UserRepo {
         try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
             User user = entityManager.find(User.class, id);
 
-            user.getCategories();
-
             return Optional.ofNullable(user);
         }
     }
@@ -36,9 +34,9 @@ public class UserMySqlJpaRepo implements UserRepo {
             entityManager.persist(user);
 
             entityManager.getTransaction().commit();
-        }
 
-        return Optional.empty();
+            return Optional.ofNullable(user);
+        }
     }
 
     @Override
