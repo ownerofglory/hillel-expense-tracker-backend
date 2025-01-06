@@ -16,6 +16,7 @@ public class TestData {
     public static final String LAST_NAME = "Doe";
     public static final String EMAIL = "john.doe@example.com";
     public static final double AMOUNT = 100.0;
+    public static final String CURRENCY = "UAH";
     public static final String DESCRIPTION = "This is a test expense";
 
     public static final Date START_DATE = new Date(2024,1, 1);
