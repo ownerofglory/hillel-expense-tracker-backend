@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "https://hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <!-- Database connection properties - Driver, URL, user, password -->
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://$DB_HOST</property>
+        <property name="hibernate.connection.username">$DB_USER</property>
+        <property name="hibernate.connection.password">$DB_PASSWORD</property>
+
+        <!-- org.hibernate.HibernateException: No CurrentSessionContext configured! -->
+        <property name="hibernate.current_session_context_class">thread</property>
+
+        <!-- Mapping with model class containing annotations -->
+        <mapping class="ua.ithillel.expensetracker.model.User"/>
+        <mapping class="ua.ithillel.expensetracker.model.UserEntity"/>
+        <mapping class="ua.ithillel.expensetracker.model.ExpenseCategory"/>
+        <mapping class="ua.ithillel.expensetracker.model.Expense"/>
+        <mapping class="ua.ithillel.expensetracker.model.ExpenseTag"/>
+    </session-factory>
+</hibernate-configuration>

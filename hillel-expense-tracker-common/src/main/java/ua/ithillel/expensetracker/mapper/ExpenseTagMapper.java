@@ -25,11 +25,21 @@ public interface ExpenseTagMapper {
 
     @Named("colorToHexCode")
     default String colorToHexCode(ExpenseTagColor color) {
-        return color.getHexCode();
+        if (color == null) {
+            return "";
+        }
+
+        if (color.getHexCode() != null) {
+            return color.getHexCode();
+        }
+        return "";
     }
 
     @Named("colorToColorName")
     default String colorToColorName(ExpenseTagColor color) {
+        if (color == null) {
+            return "";
+        }
         return color.getName();
     }
 

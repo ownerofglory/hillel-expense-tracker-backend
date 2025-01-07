@@ -27,7 +27,7 @@ public class TestData {
     public static final User USER = new User(FIRST_NAME, LAST_NAME, EMAIL, new HashSet<>(), new HashSet<>(), new HashSet<>());
     public static final UserDTO USER_DTO = new UserDTO(FIRST_NAME, LAST_NAME, EMAIL);
 
-    public static final ExpenseCategory EXPENSE_CATEGORY = new ExpenseCategory(EXPENSE_CAT_NAME);
+    public static final ExpenseCategory EXPENSE_CATEGORY = new ExpenseCategory(EXPENSE_CAT_NAME, new HashSet<>());
     public static final ExpenseCategoryDTO EXPENSE_CATEGORY_DTO = new ExpenseCategoryDTO(EXPENSE_CAT_NAME);
 
     public static final ExpenseTagColor TAG_COLOR = ExpenseTagColor.CORAL;
