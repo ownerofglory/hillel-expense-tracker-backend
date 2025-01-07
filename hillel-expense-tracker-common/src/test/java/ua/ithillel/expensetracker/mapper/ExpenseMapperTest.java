@@ -24,7 +24,7 @@ class ExpenseMapperTest {
 
     @Test
     void expenseDTOToExpense() {
-        ExpenseDTO testExpenseDTO = new ExpenseDTO(TestData.AMOUNT, TestData.DESCRIPTION, TestData.EXPENSE_CATEGORY_DTO, TestData.USER_DTO, new HashSet<>());
+        ExpenseDTO testExpenseDTO = new ExpenseDTO(TestData.AMOUNT, TestData.DESCRIPTION, TestData.EXPENSE_CATEGORY_DTO, TestData.USER_DTO, 1L, 1L, new HashSet<>());
 
         Expense testExpense = ExpenseMapper.INSTANCE.expenseDTOToExpense(testExpenseDTO);
 

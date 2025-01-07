@@ -10,6 +10,7 @@ import ua.ithillel.expensetracker.dto.ExpenseTagDTO;
 import ua.ithillel.expensetracker.model.Expense;
 import ua.ithillel.expensetracker.model.ExpenseTag;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -27,6 +28,9 @@ public interface ExpenseMapper {
 
     @Named("tagsToTagDTOs")
     default Set<ExpenseTagDTO> tagsToTagDTOs(Set<ExpenseTag> expenseTags) {
+        if (expenseTags == null) {
+            expenseTags = new HashSet<>();
+        }
         return expenseTags.stream()
                 .map(TAG_MAPPER::toExpenseTagDto)
                 .collect(Collectors.toSet());
