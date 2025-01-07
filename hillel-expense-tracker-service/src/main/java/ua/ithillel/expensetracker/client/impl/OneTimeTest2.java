@@ -9,7 +9,6 @@ public class OneTimeTest2 {
         // Создаем экземпляр вашего класса
         CurrencyConverterImpl currencyConverter = new CurrencyConverterImpl();
 
-        try {
             // Базовая валюта для тестирования
             String baseCurrency = "usd";
 
@@ -21,10 +20,6 @@ public class OneTimeTest2 {
             System.out.println("Курсы валют относительно: " + baseCurrency.toUpperCase());
             System.out.println(currencyRates);
 
-        } catch (IOException | InterruptedException e) {
-            // Обработка ошибок
-            System.err.println("Произошла ошибка при вызове getCurrencyRates: " + e.getMessage());
-            e.printStackTrace();
-        }
+
     }
 }

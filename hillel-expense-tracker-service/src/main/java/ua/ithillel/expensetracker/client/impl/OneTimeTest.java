@@ -9,7 +9,6 @@ public class OneTimeTest {
         // Создаем экземпляр вашего класса
         CurrencyConverterImpl currencyConverter = new CurrencyConverterImpl();
 
-        try {
             // Тестируем выполнение метода getCurrenciesAvailable
             System.out.println("===== Тест метода getCurrenciesAvailable =====");
             CurrenciesAvailableDTO currenciesAvailable = currencyConverter.getCurrenciesAvailable();
@@ -17,10 +16,6 @@ public class OneTimeTest {
             // Выводим содержимое объекта currenciesAvailable
             System.out.println(currenciesAvailable);
 
-        } catch (IOException | InterruptedException e) {
-            // Обработка ошибок
-            System.err.println("Произошла ошибка при вызове getCurrenciesAvailable: " + e.getMessage());
-            e.printStackTrace();
-        }
+
     }
 }
