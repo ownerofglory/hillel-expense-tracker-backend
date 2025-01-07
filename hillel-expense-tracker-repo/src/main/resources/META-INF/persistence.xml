@@ -1,0 +1,31 @@
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.0">
+
+    <persistence-unit name="expense-tracker-pu">
+        <description>Expense Tracker Hibernate</description>
+        <!--        Choose only one persistence provider and uncomment the corresponding line -->
+        <!--        Hibernate provider -->
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <!--        Eclipse Link provider -->
+        <!-- <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider> -->
+
+        <class>ua.ithillel.expensetracker.model.UserEntity</class>
+        <class>ua.ithillel.expensetracker.model.User</class>
+        <class>ua.ithillel.expensetracker.model.ExpenseCategory</class>
+        <class>ua.ithillel.expensetracker.model.Expense</class>
+        <class>ua.ithillel.expensetracker.model.ExpenseTag</class>
+
+        <properties>
+            <!--            JPA properties -->
+            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
+            <property name="jakarta.persistence.jdbc.url" value="$DB_URL" />
+            <property name="jakarta.persistence.jdbc.user" value="$DB_USER" />
+            <property name="jakarta.persistence.jdbc.password" value="$DB_PASSWORD" />
+            <!--            Hibernate specific properties -->
+            <property name="hibernate.show_sql" value="true" />
+            <!--            Eclipse Link specific properties -->
+            <property name="eclipselink.logging.level.sql" value="FINE"/>
+            <property name="eclipselink.logging.parameters" value="true"/>
+        </properties>
+    </persistence-unit>
+
+</persistence>

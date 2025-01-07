@@ -1,5 +1,6 @@
 package ua.ithillel.expensetracker.model;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,11 +12,23 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User extends AbstractModel{
+@Entity(name = "User")
+@Table(name = "t_user")
+public class User extends AbstractModel {
+    @Column(name = "first_name")
     private String firstname;
+    @Column(name = "last_name")
     private String lastname;
     private String email;
+
+    @Transient
     private Set<ExpenseTag> tags;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
     private Set<ExpenseCategory> categories;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
     private Set<Expense> expenses;
 }
