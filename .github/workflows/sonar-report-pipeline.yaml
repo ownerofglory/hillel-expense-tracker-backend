@@ -1,11 +1,13 @@
 name: Sonar pipeline
 
 on:
-  push:
-    branches:
-      - main
+  push
+#  push:
+#    branches:
+#      - main
 
 jobs:
+
   sonar-report:
     runs-on: ubuntu-latest
     steps:
@@ -15,7 +17,7 @@ jobs:
           java-version: '22'
           distribution: 'temurin'
       - name: Run Sonarqube report
-        run : ./mvnw clean verify sonar:sonar \
+        run : ./mvnw clean test sonar:sonar \
           -Dsonar.projectKey=Hillel-Expense-Tracker \
           -Dsonar.projectName='Hillel Expense Tracker' \
           -Dsonar.host.url=${{ secrets.SONAR_URL }} \
