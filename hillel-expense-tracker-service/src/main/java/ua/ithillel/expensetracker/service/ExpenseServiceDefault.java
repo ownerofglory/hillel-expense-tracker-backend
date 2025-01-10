@@ -50,7 +50,7 @@ public class ExpenseServiceDefault implements ExpenseService {
             Optional<ExpenseCategory> expenseCategory = categoryRepo.find(categoryId);
             ExpenseCategory existingCategory = expenseCategory.orElseThrow();
 
-            if (existingUser.getCategories().contains(existingCategory)) {
+            if (!existingUser.getCategories().contains(existingCategory)) {
                 throw new RuntimeException("Category does not belong to user");
             }
 
@@ -60,8 +60,8 @@ public class ExpenseServiceDefault implements ExpenseService {
             expense.setAmount(expenseDTO.getAmount());
             expense.setDescription(expenseDTO.getDescription());
 
-            expenseRepo.save(expense);
-            return expenseMapper.expenseToExpenseDTO(expense);
+            Optional<Expense> saved = expenseRepo.save(expense);
+            return expenseMapper.expenseToExpenseDTO(saved.get());
 
 
         } catch (ExpenseTrackerPersistingException e) {
