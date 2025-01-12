@@ -32,6 +32,8 @@
         <hibernate.version>6.6.4.Final</hibernate.version>
         <jpa.version>3.2.0</jpa.version>
         <eclipselink.version>4.0.5</eclipselink.version>
+        <jackson-databind.version>2.18.2</jackson-databind.version>
+        <jackson-annotations.version>2.18.2</jackson-annotations.version>
     </properties>
 
     <dependencyManagement>
@@ -84,6 +86,16 @@
                 <groupId>org.eclipse.persistence</groupId>
                 <artifactId>eclipselink</artifactId>
                 <version>${eclipselink.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson-databind.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson-annotations.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
