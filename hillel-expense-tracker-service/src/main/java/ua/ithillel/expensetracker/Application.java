@@ -65,7 +65,7 @@ public class Application {
             expenseDTO.setUserId(2L); // Jane Doe
             expenseDTO.setCategoryId(5L); // Food
             expenseDTO.setAmount(24);
-            expenseDTO.setDescription("Food test");
+            expenseDTO.setDescription("Other food test test");
 
             ExpenseDTO expense = expenseService.createExpense(expenseDTO);
 
