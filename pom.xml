@@ -32,6 +32,7 @@
         <hibernate.version>6.6.4.Final</hibernate.version>
         <jpa.version>3.2.0</jpa.version>
         <eclipselink.version>4.0.5</eclipselink.version>
+        <sonar.version>5.0.0.4389</sonar.version>
     </properties>
 
     <dependencyManagement>
@@ -134,6 +135,11 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>${sonar.version}</version>
                 </plugin>
 
             </plugins>
