@@ -1,6 +1,8 @@
 package ua.ithillel.expensetracker.service;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ua.ithillel.expensetracker.dto.ExpenseDTO;
 import ua.ithillel.expensetracker.exception.ExpenseTrackerPersistingException;
 import ua.ithillel.expensetracker.mapper.ExpenseMapper;
@@ -16,6 +18,9 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 public class ExpenseServiceDefault implements ExpenseService {
+//    private static final Logger LOGGER = Logger.getLogger(ExpenseServiceDefault.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(ExpenseServiceDefault.class);
+
     private final ExpenseRepo expenseRepo;
     private final UserRepo userRepo;
     private final ExpenseCategoryRepo categoryRepo;
@@ -23,7 +28,12 @@ public class ExpenseServiceDefault implements ExpenseService {
 
     @Override
     public List<ExpenseDTO> getExpensesByUserId(Long userId) {
+        LOGGER.info("Get expense by id");
+        LOGGER.debug("userId: " + userId);
+
+//        LOGGER.fine("user id: " + userId);
         try {
+
             Optional<User> user = userRepo.find(userId);
             User existingUser = user.orElseThrow();
 
@@ -34,6 +44,8 @@ public class ExpenseServiceDefault implements ExpenseService {
                     .toList();
 
         } catch (ExpenseTrackerPersistingException e) {
+//            LOGGER.severe(e.getMessage());
+            LOGGER.error(e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -41,6 +53,9 @@ public class ExpenseServiceDefault implements ExpenseService {
 
     @Override
     public ExpenseDTO createExpense(ExpenseDTO expenseDTO) {
+        LOGGER.info("createExpense");
+        LOGGER.debug("expense: " + expenseDTO);
+//        LOGGER.fine("expense: " + expenseDTO);
         try {
             Long userId = expenseDTO.getUserId();
             Optional<User> user = userRepo.find(userId);
@@ -65,6 +80,8 @@ public class ExpenseServiceDefault implements ExpenseService {
 
 
         } catch (ExpenseTrackerPersistingException e) {
+            LOGGER.error(e.getMessage());
+//            LOGGER.severe(e.getMessage());
             throw new RuntimeException(e);
         }
     }
