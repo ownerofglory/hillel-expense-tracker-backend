@@ -1,10 +1,9 @@
 name: Sonar pipeline
 
 on:
-  push
-#  push:
-#    branches:
-#      - main
+  push:
+    branches:
+      - main
 
 jobs:
 
@@ -17,8 +16,9 @@ jobs:
           java-version: '22'
           distribution: 'temurin'
       - name: Run Sonarqube report
-        run : ./mvnw clean test sonar:sonar \
+        run : |
+          ./mvnw clean test jacoco:report sonar:sonar \
           -Dsonar.projectKey=Hillel-Expense-Tracker \
           -Dsonar.projectName='Hillel Expense Tracker' \
-          -Dsonar.host.url=${{ secrets.SONAR_URL }} \
-          -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+          -Dsonar.host.url='${{ secrets.SONAR_URL }}' \
+          -Dsonar.token='${{ secrets.SONAR_TOKEN }}'
