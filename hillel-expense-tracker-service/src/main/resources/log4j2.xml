@@ -12,12 +12,18 @@
         <File name="FILE" fileName="/Users/VLZASOB/projects/misc/hillel/hillel-expense-tracker-backend/logs/app.log">
             <PatternLayout pattern="%d %p %C{1.} [%t] %m%n"/>
         </File>
+        <RollingFile name="RFILE"
+                     filePattern="/Users/VLZASOB/projects/misc/hillel/hillel-expense-tracker-backend/logs/roll-app.%d{yyyy-MM-dd}.log.gz">
+            <PatternLayout pattern="%d %p %C{1.} [%t] %m%n"/>
+            <SizeBasedTriggeringPolicy size="200M"/>
+        </RollingFile>
     </Appenders>
 
     <Loggers>
         <Root level="DEBUG">
             <AppenderRef ref="CONSOLE" />
             <AppenderRef ref="FILE" />
+            <AppenderRef ref="RFILE" />
         </Root>
     </Loggers>
 
