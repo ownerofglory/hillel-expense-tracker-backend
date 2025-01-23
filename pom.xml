@@ -32,6 +32,8 @@
         <hibernate.version>6.6.4.Final</hibernate.version>
         <jpa.version>3.2.0</jpa.version>
         <eclipselink.version>4.0.5</eclipselink.version>
+        <jackson-databind.version>2.18.2</jackson-databind.version>
+        <jackson-annotations.version>2.18.2</jackson-annotations.version>
         <log4j.version>2.24.3</log4j.version>
         <slf4j.version>2.0.16</slf4j.version>
         <sonar.version>5.0.0.4389</sonar.version>
@@ -87,6 +89,16 @@
                 <groupId>org.eclipse.persistence</groupId>
                 <artifactId>eclipselink</artifactId>
                 <version>${eclipselink.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson-databind.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson-annotations.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
