@@ -1,6 +1,5 @@
 package ua.ithillel.expensetracker;
 
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -8,23 +7,20 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
-import ua.ithillel.expensetracker.exception.ExpenseTrackerPersistingException;
+import ua.ithillel.expensetracker.dto.ExpenseDTO;
+import ua.ithillel.expensetracker.mapper.ExpenseMapper;
 import ua.ithillel.expensetracker.model.*;
-import ua.ithillel.expensetracker.repo.ExpenseHibernateRepo;
-import ua.ithillel.expensetracker.repo.ExpenseRepo;
-import ua.ithillel.expensetracker.repo.UserMySqlJpaRepo;
-import ua.ithillel.expensetracker.repo.UserRepo;
+import ua.ithillel.expensetracker.repo.*;
+import ua.ithillel.expensetracker.service.ExpenseService;
+import ua.ithillel.expensetracker.service.ExpenseServiceDefault;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
-/*
- Dear reviewer,
- this class is used for demo purposes as part of Java Pro course by Hillel.
- Please ignore if it doesn't comply with the project's conventions
- */
 public class Application {
     public static void main(String[] args) {
-
         Configuration configuration = new Configuration();
 //        configuration.configure("META-INF/hibernate.cfg.xml");
         Properties props = new Properties();
@@ -52,80 +48,29 @@ public class Application {
 
         try (
                 EntityManagerFactory entityManagerFactory
-                = Persistence.createEntityManagerFactory("expense-tracker-pu", jpaConfig);
+                        = Persistence.createEntityManagerFactory("expense-tracker-pu", jpaConfig);
 
                 EntityManager entityManager = entityManagerFactory.createEntityManager(); // works with JPA context
                 SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
         ) {
-
             UserRepo userRepo = new UserMySqlJpaRepo(entityManagerFactory);
             ExpenseRepo expenseRepo = new ExpenseHibernateRepo(sessionFactory);
-            
-            Optional<User> userOpt = userRepo.find(1L);
-            User user = userOpt.get();
+            ExpenseCategoryRepo expenseCategoryRepo = new ExpenseCategoryHibernateRepo(sessionFactory);
 
-            Optional<User> byEmail = userRepo.findByEmail("jane.smith@example.com");
-            User jane = byEmail.get();
+            ExpenseService expenseService = new ExpenseServiceDefault(expenseRepo, userRepo, expenseCategoryRepo, ExpenseMapper.INSTANCE);
 
-            List<Expense> janesExpenses = expenseRepo.findByUser(jane);
+            List<ExpenseDTO> expensesByUserId = expenseService.getExpensesByUserId(2L);
 
+            ExpenseDTO expenseDTO = new ExpenseDTO();
+            expenseDTO.setUserId(2L); // Jane Doe
+            expenseDTO.setCategoryId(5L); // Food
+            expenseDTO.setAmount(24);
+            expenseDTO.setDescription("Other food test test");
 
-
-//            User userEntity = new User();
-//            userEntity.setFirstname("bbb");
-//            userEntity.setLastname("bbb");
-//            userEntity.setEmail("bbb@user.com");
-//
-//            userEntity.setCategories(Set.of(
-//                    new ExpenseCategory("Food"),
-//                    new ExpenseCategory("Transportation"),
-//                    new ExpenseCategory("Entertainment"),
-//                    new ExpenseCategory("Health")
-//            ));
-//
-//
-//            userRepo.save(userEntity);
-
-
-
-
-
-
-
-
+            ExpenseDTO expense = expenseService.createExpense(expenseDTO);
 
             System.out.println();
-
-
-
-
-
-
-
-//            UserEntity user = entityManager.find(UserEntity.class, 1L);
-//
-//            UserEntity userEntity = new UserEntity();
-//            userEntity.setFirstName("Java");
-//            userEntity.setLastName("Pro");
-//            userEntity.setEmail("java@pro.com");
-//
-//            entityManager.getTransaction().begin(); // BEGIN
-//
-//            // put entity into persistence context
-//            entityManager.persist(userEntity);
-//
-//            userEntity.setLastName("Programming");
-//
-//            entityManager.flush();
-//
-//            entityManager.getTransaction().commit(); // COMMIT;
-
-
-
-            System.out.println();
-        } catch (ExpenseTrackerPersistingException e) {
-            throw new RuntimeException(e);
         }
-        ;
+
     }
 }

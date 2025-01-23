@@ -9,6 +9,8 @@ import ua.ithillel.expensetracker.dto.CategorisingResponseDTO;
 import ua.ithillel.expensetracker.model.CategorisingResponse;
 import ua.ithillel.expensetracker.model.ExpenseCategory;
 
+import java.util.HashSet;
+
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CategorisingResponseMapper {
     CategorisingResponseMapper INSTANCE = Mappers.getMapper(CategorisingResponseMapper.class);
@@ -17,5 +19,5 @@ public interface CategorisingResponseMapper {
     CategorisingResponse toCategorisingResponse(CategorisingResponseDTO categorisingResponseDTO);
 
     @Named("nameToCategory")
-    default ExpenseCategory nameToCategory (String categoryName) {return new ExpenseCategory(categoryName);}
+    default ExpenseCategory nameToCategory (String categoryName) {return new ExpenseCategory(categoryName, new HashSet<>());}
 }
