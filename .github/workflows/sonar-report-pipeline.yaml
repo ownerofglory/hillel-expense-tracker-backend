@@ -6,6 +6,7 @@ on:
       - main
 
 jobs:
+
   sonar-report:
     runs-on: ubuntu-latest
     steps:
@@ -15,8 +16,9 @@ jobs:
           java-version: '22'
           distribution: 'temurin'
       - name: Run Sonarqube report
-        run : ./mvnw clean verify sonar:sonar \
+        run : |
+          ./mvnw clean test jacoco:report sonar:sonar \
           -Dsonar.projectKey=Hillel-Expense-Tracker \
           -Dsonar.projectName='Hillel Expense Tracker' \
-          -Dsonar.host.url=${{ secrets.SONAR_URL }} \
-          -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+          -Dsonar.host.url='${{ secrets.SONAR_URL }}' \
+          -Dsonar.token='${{ secrets.SONAR_TOKEN }}'

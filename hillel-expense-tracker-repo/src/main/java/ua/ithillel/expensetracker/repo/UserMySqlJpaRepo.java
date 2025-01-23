@@ -2,6 +2,7 @@ package ua.ithillel.expensetracker.repo;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
 import ua.ithillel.expensetracker.exception.ExpenseTrackerPersistingException;
 import ua.ithillel.expensetracker.model.User;
@@ -23,7 +24,16 @@ public class UserMySqlJpaRepo implements UserRepo {
 
     @Override
     public Optional<User> findByEmail(String email) throws ExpenseTrackerPersistingException {
-        return Optional.empty();
+        try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
+
+            TypedQuery<User> query
+                    = entityManager.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class); // JQL - JPA query language
+            query.setParameter("email", email);
+            query.setMaxResults(1);
+            User userByEmail = query.getSingleResult();
+
+            return Optional.ofNullable(userByEmail);
+        }
     }
 
     @Override
@@ -41,6 +51,14 @@ public class UserMySqlJpaRepo implements UserRepo {
 
     @Override
     public Optional<User> delete(User user) throws ExpenseTrackerPersistingException {
-        return Optional.empty();
+        try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
+            entityManager.getTransaction().begin();
+
+            entityManager.remove(user);
+
+            entityManager.getTransaction().commit();
+
+            return Optional.ofNullable(user);
+        }
     }
 }
