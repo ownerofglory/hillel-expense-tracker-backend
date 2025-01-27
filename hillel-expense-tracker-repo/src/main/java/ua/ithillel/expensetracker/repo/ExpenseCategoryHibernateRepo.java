@@ -3,6 +3,7 @@ package ua.ithillel.expensetracker.repo;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import ua.ithillel.expensetracker.exception.ExpenseTrackerPersistingException;
 import ua.ithillel.expensetracker.model.ExpenseCategory;
 import ua.ithillel.expensetracker.model.User;
@@ -30,7 +31,13 @@ public class ExpenseCategoryHibernateRepo implements ExpenseCategoryRepo {
 
     @Override
     public List<ExpenseCategory> findByUser(User user) throws ExpenseTrackerPersistingException {
-        return List.of();
+        try (Session session = sessionFactory.openSession()) {
+            Query<ExpenseCategory> query
+                    = session.createQuery("SELECT c FROM ExpenseCategory c WHERE c.user = :user", ExpenseCategory.class);// JQL, HQL
+            query.setParameter("user", user);
+
+            return query.getResultList();
+        }
     }
 
     @Override

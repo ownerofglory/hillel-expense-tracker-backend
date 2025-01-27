@@ -2,7 +2,6 @@ package ua.ithillel.expensetracker.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ua.ithillel.expensetracker.dto.ExpenseDTO;
 import ua.ithillel.expensetracker.exception.ExpenseTrackerPersistingException;
 import ua.ithillel.expensetracker.mapper.ExpenseMapper;
 import ua.ithillel.expensetracker.model.Expense;
@@ -50,7 +49,7 @@ public class ExpenseServiceDefaultTest {
         when(userRepo.find(anyLong())).thenReturn(Optional.of(new User()));
         when(expenseRepo.findByUser(any())).thenReturn(List.of(new Expense()));
 
-        List<ExpenseDTO> expenses = expenseService.getExpensesByUserId(testId);
+        List<ua.ithillel.expensetracker.dto.ExpenseDTO> expenses = expenseService.getExpensesByUserId(testId);
 
         assertNotNull(expenses);
         assertNotEquals(0, expenses.size());
@@ -87,7 +86,7 @@ public class ExpenseServiceDefaultTest {
 
     @Test
     void createExpense_success() throws ExpenseTrackerPersistingException {
-        ExpenseDTO testExpense = new ExpenseDTO();
+        ua.ithillel.expensetracker.dto.ExpenseDTO testExpense = new ua.ithillel.expensetracker.dto.ExpenseDTO();
         testExpense.setCategoryId(1L);
         testExpense.setDescription("description");
         testExpense.setUserId(1L);
@@ -107,14 +106,14 @@ public class ExpenseServiceDefaultTest {
         when(expenseRepo.save(any())).thenReturn(Optional.of(mockExpense));
 
 
-        ExpenseDTO expense = expenseService.createExpense(testExpense);
+        ua.ithillel.expensetracker.dto.ExpenseDTO expense = expenseService.createExpense(testExpense);
         assertNotNull(expense);
         assertNotNull(expense.getId());
     }
 
     @Test
     void createExpense_nonExistingUserThrowsException() throws ExpenseTrackerPersistingException {
-        ExpenseDTO testExpense = new ExpenseDTO();
+        ua.ithillel.expensetracker.dto.ExpenseDTO testExpense = new ua.ithillel.expensetracker.dto.ExpenseDTO();
         testExpense.setCategoryId(1L);
         testExpense.setDescription("description");
         testExpense.setUserId(1L);
@@ -132,7 +131,7 @@ public class ExpenseServiceDefaultTest {
 
     @Test
     void createExpense_nonExistingCategoryThrowsException() throws ExpenseTrackerPersistingException {
-        ExpenseDTO testExpense = new ExpenseDTO();
+        ua.ithillel.expensetracker.dto.ExpenseDTO testExpense = new ua.ithillel.expensetracker.dto.ExpenseDTO();
         testExpense.setCategoryId(1L);
         testExpense.setDescription("description");
         testExpense.setUserId(1L);
@@ -151,7 +150,7 @@ public class ExpenseServiceDefaultTest {
 
     @Test
     void createExpense_categoriesDonNotMatch() throws ExpenseTrackerPersistingException {
-        ExpenseDTO testExpense = new ExpenseDTO();
+        ua.ithillel.expensetracker.dto.ExpenseDTO testExpense = new ua.ithillel.expensetracker.dto.ExpenseDTO();
         testExpense.setCategoryId(1L);
         testExpense.setDescription("description");
         testExpense.setUserId(1L);

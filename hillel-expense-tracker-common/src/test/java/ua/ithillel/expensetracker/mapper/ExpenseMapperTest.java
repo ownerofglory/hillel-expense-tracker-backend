@@ -1,7 +1,6 @@
 package ua.ithillel.expensetracker.mapper;
 
 import org.junit.jupiter.api.Test;
-import ua.ithillel.expensetracker.dto.ExpenseDTO;
 import ua.ithillel.expensetracker.model.Expense;
 
 import java.util.HashSet;
@@ -13,7 +12,7 @@ class ExpenseMapperTest {
     void expenseToExpenseDTO() {
         Expense testExpense = new Expense(TestData.AMOUNT, TestData.DESCRIPTION, TestData.EXPENSE_CATEGORY, TestData.USER, new HashSet<>());
 
-        ExpenseDTO testExpenseDTO = ExpenseMapper.INSTANCE.expenseToExpenseDTO(testExpense);
+        ua.ithillel.expensetracker.dto.ExpenseDTO testExpenseDTO = ExpenseMapper.INSTANCE.expenseToExpenseDTO(testExpense);
 
         assertNotNull(testExpenseDTO);
         assertEquals(TestData.AMOUNT, testExpenseDTO.getAmount());
@@ -24,7 +23,7 @@ class ExpenseMapperTest {
 
     @Test
     void expenseDTOToExpense() {
-        ExpenseDTO testExpenseDTO = new ExpenseDTO(TestData.AMOUNT, TestData.DESCRIPTION, TestData.EXPENSE_CATEGORY_DTO, TestData.USER_DTO, 1L, 1L, new HashSet<>());
+        ua.ithillel.expensetracker.dto.ExpenseDTO testExpenseDTO = new ua.ithillel.expensetracker.dto.ExpenseDTO(TestData.AMOUNT, TestData.DESCRIPTION, TestData.EXPENSE_CATEGORY_DTO, TestData.USER_DTO, 1L, 1L, new HashSet<>());
 
         Expense testExpense = ExpenseMapper.INSTANCE.expenseDTOToExpense(testExpenseDTO);
 

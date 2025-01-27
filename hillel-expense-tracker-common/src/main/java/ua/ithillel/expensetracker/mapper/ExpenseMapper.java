@@ -5,7 +5,6 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
-import ua.ithillel.expensetracker.dto.ExpenseDTO;
 import ua.ithillel.expensetracker.dto.ExpenseTagDTO;
 import ua.ithillel.expensetracker.model.Expense;
 import ua.ithillel.expensetracker.model.ExpenseTag;
@@ -21,10 +20,10 @@ public interface ExpenseMapper {
     ExpenseTagMapper TAG_MAPPER = Mappers.getMapper(ExpenseTagMapper.class);
 
     @Mapping(source = "tags", target = "tags", qualifiedByName = "tagsToTagDTOs")
-    ExpenseDTO expenseToExpenseDTO(Expense expense);
+    ua.ithillel.expensetracker.dto.ExpenseDTO expenseToExpenseDTO(Expense expense);
 
     @Mapping(source = "tags", target = "tags", qualifiedByName = "tagsDTOsToTags")
-    Expense expenseDTOToExpense(ExpenseDTO expenseDTO);
+    Expense expenseDTOToExpense(ua.ithillel.expensetracker.dto.ExpenseDTO expenseDTO);
 
     @Named("tagsToTagDTOs")
     default Set<ExpenseTagDTO> tagsToTagDTOs(Set<ExpenseTag> expenseTags) {
