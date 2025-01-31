@@ -2,6 +2,7 @@ package ua.ithillel.expensetracker.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import ua.ithillel.expensetracker.dto.ExpenseDTO;
 import ua.ithillel.expensetracker.exception.ExpenseTrackerPersistingException;
 import ua.ithillel.expensetracker.mapper.ExpenseMapper;
@@ -17,6 +18,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Slf4j
+@Service
 public class ExpenseServiceDefault implements ExpenseService {
     private final ExpenseRepo expenseRepo;
     private final UserRepo userRepo;

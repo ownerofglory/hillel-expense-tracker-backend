@@ -1,6 +1,5 @@
 package ua.ithillel.expensetracker.mapper;
 
-import jdk.jfr.Name;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -12,7 +11,7 @@ import ua.ithillel.expensetracker.model.ExpenseTagColor;
 
 import java.util.Arrays;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface ExpenseTagMapper {
     ExpenseTagMapper INSTANCE = Mappers.getMapper(ExpenseTagMapper.class);
 

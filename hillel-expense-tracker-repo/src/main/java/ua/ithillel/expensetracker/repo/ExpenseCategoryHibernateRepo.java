@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 import ua.ithillel.expensetracker.exception.ExpenseTrackerPersistingException;
 import ua.ithillel.expensetracker.model.ExpenseCategory;
 import ua.ithillel.expensetracker.model.User;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
+@Repository
 public class ExpenseCategoryHibernateRepo implements ExpenseCategoryRepo {
     private final SessionFactory sessionFactory;
 

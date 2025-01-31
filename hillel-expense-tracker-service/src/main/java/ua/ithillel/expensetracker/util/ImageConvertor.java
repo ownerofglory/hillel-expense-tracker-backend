@@ -13,11 +13,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class ImageConversionUtil {
+public class ImageConvertor {
     private final static String JPEG_FORMAT = "JPEG";
     private final static float DEFAULT_COMPRESSION_RATE = 0.5f;
 
-    public static InputStream convertImageToGrayscale(InputStream inputStream) {
+    public InputStream convertImageToGrayscale(InputStream inputStream) {
         try {
             BufferedImage image = ImageIO.read(inputStream);
             BufferedImage grayScaleImg = new BufferedImage(
@@ -36,7 +36,7 @@ public class ImageConversionUtil {
         }
     }
 
-    public static InputStream compressImage(InputStream inputStream, float compressionRate) {
+    public InputStream compressImage(InputStream inputStream, float compressionRate) {
         try {
             ByteArrayOutputStream os = new ByteArrayOutputStream();
 
@@ -61,7 +61,7 @@ public class ImageConversionUtil {
         }
     }
 
-    public static InputStream compressImage(InputStream inputStream) {
+    public InputStream compressImage(InputStream inputStream) {
         return compressImage(inputStream, DEFAULT_COMPRESSION_RATE);
     }
 }

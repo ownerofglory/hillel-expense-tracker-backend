@@ -4,12 +4,12 @@ import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.models.*;
 import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchema;
 import com.fasterxml.jackson.module.jsonSchema.JsonSchemaGenerator;
 import com.fasterxml.jackson.module.jsonSchema.types.ObjectSchema;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import ua.ithillel.expensetracker.client.GPTClient;
 import ua.ithillel.expensetracker.client.exception.GptChatCompletionException;
 import ua.ithillel.expensetracker.client.model.GptMessage;
@@ -21,6 +21,7 @@ import ua.ithillel.expensetracker.client.schema.GptResponseSchema;
 import java.util.List;
 
 @RequiredArgsConstructor
+@Component
 public class AzureOpenAiGptClient implements GPTClient {
     private static final String DEPLOYMENT_MODEL = "gpt-4o-mini";
 
@@ -29,6 +30,11 @@ public class AzureOpenAiGptClient implements GPTClient {
 
     @Override
     public GptResponse<String> getChatCompletion(List<GptMessage> messages) {
+        String model = System.getenv("OPENAI_MODEL");
+        if (model == null || model.isEmpty()) {
+            model = DEPLOYMENT_MODEL;
+        }
+
         List<ChatRequestMessage> chatRequestMessages = convertMessages(messages);
         ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatRequestMessages);
 
@@ -45,6 +51,11 @@ public class AzureOpenAiGptClient implements GPTClient {
     @Override
     public <T> GptResponse<T> getChatCompletionWithResponseType(List<GptMessage> messages, Class<T> clazz) {
         try {
+            String model = System.getenv("OPENAI_MODEL");
+            if (model == null || model.isEmpty()) {
+                model = DEPLOYMENT_MODEL;
+            }
+
             JsonSchemaGenerator jsonSchemaGenerator = new JsonSchemaGenerator(objectMapper);
             JsonSchema jsonSchema = jsonSchemaGenerator.generateSchema(clazz);
             GptJsonSchema gptJsonSchema = new GptJsonSchema((ObjectSchema) jsonSchema);

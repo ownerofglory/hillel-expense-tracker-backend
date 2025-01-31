@@ -11,4 +11,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ExpenseCategoryDTO extends AbstractDTO {
     private String name;
+    private Long userId;
 }
