@@ -1,9 +1,6 @@
 package ua.ithillel.expensetracker.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,4 +20,7 @@ public class ExpenseCategory extends AbstractModel {
     @OneToMany
     @JoinColumn(name = "category_id")
     private Set<Expense> expenses;
+
+    @ManyToOne
+    private User user;
 }

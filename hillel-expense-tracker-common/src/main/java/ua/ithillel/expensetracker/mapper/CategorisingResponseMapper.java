@@ -19,5 +19,5 @@ public interface CategorisingResponseMapper {
     CategorisingResponse toCategorisingResponse(CategorisingResponseDTO categorisingResponseDTO);
 
     @Named("nameToCategory")
-    default ExpenseCategory nameToCategory (String categoryName) {return new ExpenseCategory(categoryName, new HashSet<>());}
+    default ExpenseCategory nameToCategory (String categoryName) {return new ExpenseCategory(categoryName, new HashSet<>(), null);}
 }

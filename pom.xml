@@ -40,6 +40,8 @@
         <azure.openai.version>1.0.0-beta.12</azure.openai.version>
         <jackson.schema.version>2.18.2</jackson.schema.version>
         <wiremock.version>3.9.1</wiremock.version>
+        <twelve-monkeys.imageoio.version>3.12.0</twelve-monkeys.imageoio.version>
+        <spring.version>6.2.2</spring.version>
     </properties>
 
     <dependencyManagement>
@@ -129,6 +131,11 @@
                 <version>${azure.openai.version}</version>
             </dependency>
             <dependency>
+                <groupId>com.twelvemonkeys.imageio</groupId>
+                <artifactId>imageio-core</artifactId>
+                <version>${twelve-monkeys.imageoio.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>com.fasterxml.jackson.module</groupId>
                 <artifactId>jackson-module-jsonSchema</artifactId>
                 <version>${jackson.schema.version}</version>
@@ -138,6 +145,16 @@
                 <artifactId>wiremock</artifactId>
                 <version>${wiremock.version}</version>
                 <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${spring.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

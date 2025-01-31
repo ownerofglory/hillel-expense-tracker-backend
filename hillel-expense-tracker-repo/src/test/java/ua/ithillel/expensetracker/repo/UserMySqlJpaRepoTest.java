@@ -59,7 +59,7 @@ public class UserMySqlJpaRepoTest extends RepoTestParent {
         testUser.setFirstname("testUser");
         testUser.setLastname("testUser");
         testUser.setEmail("testUser@example.com");
-        testUser.setCategories(Set.of(new ExpenseCategory("testCategory", Set.of())));
+        testUser.setCategories(Set.of(new ExpenseCategory("testCategory", Set.of(), testUser)));
 
         Optional<User> saved = userMySqlJpaRepo.save(testUser);
 

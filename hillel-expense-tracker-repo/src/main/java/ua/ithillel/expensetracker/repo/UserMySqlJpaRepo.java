@@ -4,12 +4,16 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Repository;
 import ua.ithillel.expensetracker.exception.ExpenseTrackerPersistingException;
 import ua.ithillel.expensetracker.model.User;
 
 import java.util.Optional;
 
 @RequiredArgsConstructor
+@Repository
 public class UserMySqlJpaRepo implements UserRepo {
     private final EntityManagerFactory entityManagerFactory;
 

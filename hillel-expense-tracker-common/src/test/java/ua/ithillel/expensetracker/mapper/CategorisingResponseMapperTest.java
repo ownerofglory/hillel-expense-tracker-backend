@@ -12,7 +12,7 @@ class CategorisingResponseMapperTest {
 
     @Test
     void toCategorisingResponse() {
-        CategorisingResponseDTO testResponseDTO = new CategorisingResponseDTO(TestData.EXPENSE_CAT_NAME, TestData.AMOUNT, TestData.CURRENCY);
+        CategorisingResponseDTO testResponseDTO = new CategorisingResponseDTO(TestData.EXPENSE_CAT_NAME, TestData.AMOUNT, "", TestData.CURRENCY, false, "");
 
         CategorisingResponse response = CategorisingResponseMapper.INSTANCE.toCategorisingResponse(testResponseDTO);
 

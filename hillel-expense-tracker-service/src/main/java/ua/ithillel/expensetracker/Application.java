@@ -1,76 +1,40 @@
 package ua.ithillel.expensetracker;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
-import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import ua.ithillel.expensetracker.dto.ExpenseDTO;
-import ua.ithillel.expensetracker.mapper.ExpenseMapper;
-import ua.ithillel.expensetracker.model.*;
-import ua.ithillel.expensetracker.repo.*;
+import ua.ithillel.expensetracker.exception.ServiceException;
+import ua.ithillel.expensetracker.service.CategoryService;
 import ua.ithillel.expensetracker.service.ExpenseService;
-import ua.ithillel.expensetracker.service.ExpenseServiceDefault;
+import ua.ithillel.expensetracker.service.SmartExpenseService;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class Application {
     public static void main(String[] args) {
-        Configuration configuration = new Configuration();
-//        configuration.configure("META-INF/hibernate.cfg.xml");
-        Properties props = new Properties();
-        props.put("hibernate.connection.driver_class", "com.mysql.cj.jdbc.Driver");
-        props.put("hibernate.connection.url", String.format("jdbc:mysql://%s/%s", System.getenv("JDBC_DB_HOST"), System.getenv("JDBC_DB_NAME")));
-        props.put("hibernate.connection.username", System.getenv("JDBC_USER"));
-        props.put("hibernate.connection.password", System.getenv("JDBC_PASSWORD"));
-        props.put("hibernate.current_session_context_class", "thread");
+//        ExternalCategoryClient externalCategoryClient = new ExternalCategoryClientDefault();
+//        CategoryService categoryService = new CategoryInMemoryService(externalCategoryClient);
+//        ApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
+        try (InputStream image = Application.class.getClassLoader().getResourceAsStream("bill1.jpeg")) {
+            ApplicationContext context = new AnnotationConfigApplicationContext("ua.ithillel.expensetracker");
 
-        configuration.setProperties(props);
-        configuration.addAnnotatedClass(User.class);
-        configuration.addAnnotatedClass(UserEntity.class);
-        configuration.addAnnotatedClass(ExpenseCategory.class);
-        configuration.addAnnotatedClass(Expense.class);
-        configuration.addAnnotatedClass(ExpenseTag.class);
-
-        ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties())
-                .build();
+            String region = System.getenv("REGION");
+            CategoryService categoryService = context.getBean(CategoryService.class);
+            CategoryService categoryService1 = (CategoryService) context.getBean("categoryService");
 
 
-        Map<String, String> jpaConfig = new HashMap<>();
-        jpaConfig.put("jakarta.persistence.jdbc.url", String.format("jdbc:mysql://%s/%s", System.getenv("JDBC_DB_HOST"), System.getenv("JDBC_DB_NAME")));
-        jpaConfig.put("jakarta.persistence.jdbc.user",System.getenv("JDBC_USER"));
-        jpaConfig.put("jakarta.persistence.jdbc.password", System.getenv("JDBC_PASSWORD"));
+            ExpenseService expenseService = context.getBean(ExpenseService.class);
 
-        try (
-                EntityManagerFactory entityManagerFactory
-                        = Persistence.createEntityManagerFactory("expense-tracker-pu", jpaConfig);
+            SmartExpenseService smartExpenseService = context.getBean(SmartExpenseService.class);
 
-                EntityManager entityManager = entityManagerFactory.createEntityManager(); // works with JPA context
-                SessionFactory sessionFactory = configuration.buildSessionFactory(serviceRegistry);
-        ) {
-            UserRepo userRepo = new UserMySqlJpaRepo(entityManagerFactory);
-            ExpenseRepo expenseRepo = new ExpenseHibernateRepo(sessionFactory);
-            ExpenseCategoryRepo expenseCategoryRepo = new ExpenseCategoryHibernateRepo(sessionFactory);
-
-            ExpenseService expenseService = new ExpenseServiceDefault(expenseRepo, userRepo, expenseCategoryRepo, ExpenseMapper.INSTANCE);
-
-            List<ExpenseDTO> expensesByUserId = expenseService.getExpensesByUserId(2L);
-
-            ExpenseDTO expenseDTO = new ExpenseDTO();
-            expenseDTO.setUserId(2L); // Jane Doe
-            expenseDTO.setCategoryId(5L); // Food
-            expenseDTO.setAmount(24);
-            expenseDTO.setDescription("Other food test test");
-
-            ExpenseDTO expense = expenseService.createExpense(expenseDTO);
+            ExpenseDTO taxes = smartExpenseService.suggestExpenseByPrompt("I went to a bar and spent 30 euro for booze", 2L);
+            ExpenseDTO supermarket = smartExpenseService.suggestExpenseByBillScan(image, 2L);
 
             System.out.println();
-        }
 
+        } catch (ServiceException | IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -2,8 +2,7 @@ package ua.ithillel.expensetracker.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 import ua.ithillel.expensetracker.dto.ExpenseDTO;
 import ua.ithillel.expensetracker.exception.ExpenseTrackerPersistingException;
 import ua.ithillel.expensetracker.mapper.ExpenseMapper;
@@ -19,11 +18,8 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Slf4j
+@Service
 public class ExpenseServiceDefault implements ExpenseService {
-//    private static final Logger LOGGER = Logger.getLogger(ExpenseServiceDefault.class.getName());
-//    private static final Logger LOGGER = LogManager.getLogger(ExpenseServiceDefault.class);
-//    private static final Logger log = LoggerFactory.getLogger(ExpenseServiceDefault.class);
-
     private final ExpenseRepo expenseRepo;
     private final UserRepo userRepo;
     private final ExpenseCategoryRepo categoryRepo;
@@ -34,7 +30,6 @@ public class ExpenseServiceDefault implements ExpenseService {
         log.info("Get expense by id");
         log.debug("userId: " + userId);
 
-//        LOGGER.fine("user id: " + userId);
         try {
 
             Optional<User> user = userRepo.find(userId);
@@ -47,7 +42,6 @@ public class ExpenseServiceDefault implements ExpenseService {
                     .toList();
 
         } catch (ExpenseTrackerPersistingException e) {
-//            LOGGER.severe(e.getMessage());
             log.error(e.getMessage());
             throw new RuntimeException(e);
         }
@@ -55,10 +49,9 @@ public class ExpenseServiceDefault implements ExpenseService {
     }
 
     @Override
-    public ExpenseDTO createExpense(ExpenseDTO expenseDTO) {
+    public ExpenseDTO createExpense(ua.ithillel.expensetracker.dto.ExpenseDTO expenseDTO) {
         log.info("createExpense");
         log.debug("expense: " + expenseDTO);
-//        LOGGER.fine("expense: " + expenseDTO);
         try {
             Long userId = expenseDTO.getUserId();
             Optional<User> user = userRepo.find(userId);
@@ -84,7 +77,6 @@ public class ExpenseServiceDefault implements ExpenseService {
 
         } catch (ExpenseTrackerPersistingException e) {
             log.error(e.getMessage());
-//            LOGGER.severe(e.getMessage());
             throw new RuntimeException(e);
         }
     }

@@ -34,7 +34,7 @@ public class GptJsonSchema {
         schema.getProperties().forEach((propertyName, propertySchema) -> {
             properties.put(propertyName, new GptJsonSchema.PropertyDefinition(propertySchema));
 
-            if (propertySchema.getRequired()) {
+            if (propertySchema.getRequired() != null && propertySchema.getRequired()) {
                 required.add(propertyName);
             }
         });
