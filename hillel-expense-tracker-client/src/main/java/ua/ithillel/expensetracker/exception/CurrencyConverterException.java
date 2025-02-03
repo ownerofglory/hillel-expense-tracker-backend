@@ -1,4 +1,4 @@
-package ua.ithillel.expensetracker.client.exception;
+package ua.ithillel.expensetracker.exception;
 
 public class CurrencyConverterException extends RuntimeException {
     public CurrencyConverterException(String message) {

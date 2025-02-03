@@ -1,4 +1,4 @@
-package ua.ithillel.expensetracker.client.config;
+package ua.ithillel.expensetracker.config;
 
 import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.OpenAIClientBuilder;

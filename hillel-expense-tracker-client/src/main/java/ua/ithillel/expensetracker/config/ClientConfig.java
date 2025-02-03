@@ -1,4 +1,4 @@
-package ua.ithillel.expensetracker.client.config;
+package ua.ithillel.expensetracker.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

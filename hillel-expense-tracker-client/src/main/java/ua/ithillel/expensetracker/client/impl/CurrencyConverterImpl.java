@@ -2,7 +2,7 @@ package ua.ithillel.expensetracker.client.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ua.ithillel.expensetracker.client.CurrencyConverter;
-import ua.ithillel.expensetracker.client.exception.CurrencyConverterException;
+import ua.ithillel.expensetracker.exception.CurrencyConverterException;
 import ua.ithillel.expensetracker.dto.CurrenciesAvailableDTO;
 import ua.ithillel.expensetracker.dto.CurrencyRatesDTO;
 
