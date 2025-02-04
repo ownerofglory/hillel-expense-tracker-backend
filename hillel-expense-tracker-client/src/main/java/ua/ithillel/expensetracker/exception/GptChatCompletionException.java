@@ -1,4 +1,4 @@
-package ua.ithillel.expensetracker.client.exception;
+package ua.ithillel.expensetracker.exception;
 
 public class GptChatCompletionException extends RuntimeException {
     public GptChatCompletionException(String message) {

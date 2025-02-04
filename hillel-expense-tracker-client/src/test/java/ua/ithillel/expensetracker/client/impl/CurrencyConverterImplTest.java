@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import ua.ithillel.expensetracker.client.exception.CurrencyConverterException;
+import ua.ithillel.expensetracker.exception.CurrencyConverterException;
 import ua.ithillel.expensetracker.dto.CurrenciesAvailableDTO;
 import ua.ithillel.expensetracker.dto.CurrencyRatesDTO;
 

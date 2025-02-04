@@ -3,9 +3,9 @@ package ua.ithillel.expensetracker.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ua.ithillel.expensetracker.client.GPTClient;
-import ua.ithillel.expensetracker.client.model.GptMessage;
-import ua.ithillel.expensetracker.client.model.GptMessageContent;
-import ua.ithillel.expensetracker.client.model.GptResponse;
+import ua.ithillel.expensetracker.model.GptMessage;
+import ua.ithillel.expensetracker.model.GptMessageContent;
+import ua.ithillel.expensetracker.model.GptResponse;
 import ua.ithillel.expensetracker.dto.CategorisingResponseDTO;
 import ua.ithillel.expensetracker.dto.ExpenseDTO;
 import ua.ithillel.expensetracker.exception.ExpenseTrackerPersistingException;
@@ -30,6 +30,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 public class SmartExpenseGptService implements SmartExpenseService {
+    public static final String BILL_SCANNING_PROMPT = "Please categorise the expense by the image of the provided bill";
+    public static final String IMG_BASE_64_PREFIX = "data:image/jpeg;base64,";
+
     private final GPTClient gptClient;
     private final ExpenseCategoryRepo expenseCategoryRepo;
     private final UserRepo userRepo;
@@ -54,8 +57,8 @@ public class SmartExpenseGptService implements SmartExpenseService {
             String gptContext = MessageFormat.format(gptContextTemplate, userStr, currentDateTimeStr,  categoriesStr);
 
             // prepare GPT messages
-            GptMessage systemMessage = createGptTextMessage("system", gptContext);
-            GptMessage gptUserMessage = createGptTextMessage("user", prompt);
+            GptMessage systemMessage = createGptTextMessage(GptMessage.ROLE_SYSTEM, gptContext);
+            GptMessage gptUserMessage = createGptTextMessage(GptMessage.ROLE_USER, prompt);
 
             List<GptMessage> messages = List.of(systemMessage, gptUserMessage);
 
@@ -104,8 +107,8 @@ public class SmartExpenseGptService implements SmartExpenseService {
             String gptContext = MessageFormat.format(gptContextTemplate, userStr, currentDateTimeStr,  categoriesStr);
 
             // prepare GPT messages
-            GptMessage systemMessage = createGptTextMessage("system", gptContext);
-            GptMessage gptUserMessage = createGptTextMessage("user", "Please categorise the expense by the image of the provided bill");
+            GptMessage systemMessage = createGptTextMessage(GptMessage.ROLE_SYSTEM, gptContext);
+            GptMessage gptUserMessage = createGptTextMessage(GptMessage.ROLE_USER, BILL_SCANNING_PROMPT);
 
             InputStream compressedInputStream = imageConvertor.compressImage(billScanInputStream);
             InputStream grayScaleInputStream = imageConvertor.convertImageToGrayscale(compressedInputStream);
@@ -144,15 +147,15 @@ public class SmartExpenseGptService implements SmartExpenseService {
 
     private GptMessage createGptTextMessage(String role, String text) {
         GptMessageContent gptMessageContent = new GptMessageContent();
-        gptMessageContent.setType("text");
+        gptMessageContent.setType(GptMessageContent.CONTENT_TYPE_TEXT);
         gptMessageContent.setTextContent(text);
         return new GptMessage(role, gptMessageContent);
     }
 
     private GptMessage createGptImageMessage(String role, String imageUrl) {
         GptMessageContent gptMessageContent = new GptMessageContent();
-        gptMessageContent.setType("image_url");
-        gptMessageContent.setImageUrl("data:image/jpeg;base64," + imageUrl);
+        gptMessageContent.setType(GptMessageContent.CONTENT_TYPE_IMAGE_URL);
+        gptMessageContent.setImageUrl(IMG_BASE_64_PREFIX + imageUrl);
         return new GptMessage(role, gptMessageContent);
     }
 

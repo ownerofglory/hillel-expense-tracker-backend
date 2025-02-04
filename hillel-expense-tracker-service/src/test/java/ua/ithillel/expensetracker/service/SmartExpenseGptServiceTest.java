@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import ua.ithillel.expensetracker.client.GPTClient;
-import ua.ithillel.expensetracker.client.model.GptResponse;
+import ua.ithillel.expensetracker.model.GptResponse;
 import ua.ithillel.expensetracker.dto.CategorisingResponseDTO;
 import ua.ithillel.expensetracker.dto.ExpenseDTO;
 import ua.ithillel.expensetracker.exception.ExpenseTrackerPersistingException;

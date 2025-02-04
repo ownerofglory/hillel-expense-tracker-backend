@@ -1,4 +1,4 @@
-package ua.ithillel.expensetracker.client.config;
+package ua.ithillel.expensetracker.config;
 
 import org.springframework.beans.factory.FactoryBean;
 import ua.ithillel.expensetracker.client.ExternalCategoryClient;
