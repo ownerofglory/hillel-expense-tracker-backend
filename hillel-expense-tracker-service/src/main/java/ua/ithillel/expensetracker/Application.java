@@ -2,6 +2,7 @@ package ua.ithillel.expensetracker;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import ua.ithillel.expensetracker.dto.ExpenseCategoryDTO;
 import ua.ithillel.expensetracker.dto.ExpenseDTO;
 import ua.ithillel.expensetracker.exception.ServiceException;
 import ua.ithillel.expensetracker.service.CategoryService;
@@ -10,6 +11,7 @@ import ua.ithillel.expensetracker.service.SmartExpenseService;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 public class Application {
     public static void main(String[] args) {
@@ -22,6 +24,7 @@ public class Application {
             String region = System.getenv("REGION");
             CategoryService categoryService = context.getBean(CategoryService.class);
             CategoryService categoryService1 = (CategoryService) context.getBean("categoryService");
+            List<ExpenseCategoryDTO> allCategoriesByUserId = categoryService1.findAllCategoriesByUserId(1L);
 
 
             ExpenseService expenseService = context.getBean(ExpenseService.class);
