@@ -12,6 +12,7 @@ create table t_user
     last_name  varchar(100) default '' null,
     email      varchar(256) not null,
     birth_date date default '2000-01-01' not null,
+    created_at datetime default NOW(),
     constraint t_user_email_unique unique (email)
 );
 
@@ -20,6 +21,7 @@ create table t_category
     id int auto_increment primary key,
     name varchar(100) not null,
     user_id int,
+    created_at datetime default NOW(),
     constraint t_category_user_fk
         foreign key (user_id) references t_user (id)
 );
@@ -32,6 +34,7 @@ create table t_expense
     amount double not null,
     description varchar(200),
     category_id int,
+    created_at datetime default NOW(),
     user_id int,
     constraint t_expense_category_fk
         foreign key (category_id) references t_category (id)
@@ -59,6 +62,7 @@ create table t_report
 (
     id int auto_increment primary key,
     user_id int,
+    created_at datetime default NOW(),
     constraint t_report_user_fk
         foreign key (user_id) references t_user (id)
 );
@@ -85,6 +89,7 @@ create table t_tag
     id int auto_increment primary key,
     name varchar(20) not null,
     user_id int,
+    created_at datetime default NOW(),
     constraint t_tag_user_fk
         foreign key (user_id) references t_user (id)
 );

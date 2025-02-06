@@ -11,6 +11,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ua.ithillel.expensetracker.client.tool.AgentToolType;
 import ua.ithillel.expensetracker.client.tool.GptTool;
 import ua.ithillel.expensetracker.client.tool.GptToolChoice;
 import ua.ithillel.expensetracker.model.GptMessage;
@@ -83,7 +84,7 @@ public class AzureOpenAiGptClientTest {
         GptMessage gptMessage2 = new GptMessage("user", gptMessageContent1);
 
         GptMessageContent gptMessageToolContent = new GptMessageContent();
-        gptMessageToolContent.setType(GptMessageContent.CONTENT_TYPE_TOOL_CALL);
+        gptMessageToolContent.setType(GptMessageContent.CONTENT_TYPE_TOOL_CALL_RESULT);
         gptMessageToolContent.setToolCallId("testId");
         gptMessageToolContent.setToolCallResult("success");
         GptMessage gptToolResultMessage = new GptMessage(GptMessage.ROLE_TOOL, gptMessageToolContent);
@@ -96,7 +97,7 @@ public class AzureOpenAiGptClientTest {
         tool.setName("StoreUser");
         tool.setDescription("Stores user by given name and age and returns saved user");
         tool.setParameters(new FuncParams());
-        List<GptTool<FuncParams>> tools = List.of(
+        List<GptTool<? extends AgentToolType>> tools = List.of(
                 tool
         );
 
@@ -129,7 +130,7 @@ public class AzureOpenAiGptClientTest {
         tool.setName("StoreUser");
         tool.setDescription("Stores user by given name and age and returns saved user");
         tool.setParameters(new FuncParams());
-        List<GptTool<FuncParams>> tools = List.of(
+        List<GptTool<? extends AgentToolType>> tools = List.of(
                 tool
         );
 
@@ -167,7 +168,7 @@ public class AzureOpenAiGptClientTest {
         tool.setName("StoreUser");
         tool.setDescription("Stores user by given name and age and returns saved user");
         tool.setParameters(new FuncParams());
-        List<GptTool<FuncParams>> tools = List.of(
+        List<GptTool<? extends AgentToolType>> tools = List.of(
             tool
         );
 
@@ -206,7 +207,7 @@ public class AzureOpenAiGptClientTest {
         tool.setName("StoreUser");
         tool.setDescription("Test prompt");
         tool.setParameters(new FuncParams());
-        List<GptTool<FuncParams>> tools = List.of(
+        List<GptTool<? extends AgentToolType>> tools = List.of(
                 tool
         );
 
@@ -327,12 +328,27 @@ public class AzureOpenAiGptClientTest {
         private String location;
     }
 
-    private static class FuncParams {
+    private static class FuncParams implements AgentToolType {
         @JsonProperty(value = "type")
         private String type = "object";
 
         @JsonProperty(value = "properties")
         private TestFuncParams properties = new TestFuncParams();
+
+        @Override
+        public String getName() {
+            return "";
+        }
+
+        @Override
+        public String getDescription() {
+            return "";
+        }
+
+        @Override
+        public Object getParams() {
+            return null;
+        }
     }
 
     private static class TestFuncParams {

@@ -1,5 +1,6 @@
 package ua.ithillel.expensetracker.client;
 
+import ua.ithillel.expensetracker.client.tool.AgentToolType;
 import ua.ithillel.expensetracker.model.GptMessage;
 import ua.ithillel.expensetracker.model.GptResponse;
 import ua.ithillel.expensetracker.client.tool.GptTool;
@@ -43,7 +44,7 @@ public interface GPTClient {
      * @return GptToolResponse that contains either chat completion text or tool call
      * @param <Tfunc> tool object type
      */
-    <Tfunc> GptToolResponse getChatCompletionWithTools(List<GptMessage> messages, List<GptTool<Tfunc>> gptTools);
+    <Tfunc extends AgentToolType> GptToolResponse getChatCompletionWithTools(List<GptMessage> messages, List<GptTool<? extends AgentToolType>> gptTools);
 
     /**
      * Creates a chat completion with a possible tool call.
@@ -55,5 +56,5 @@ public interface GPTClient {
      * @return Stream of GptToolResponse chunks that contains either chat completion text or tool call
      * @param <Tfunc> tool object type
      */
-    <Tfunc> Stream<GptToolResponse> getChatCompletionWithToolsStream(List<GptMessage> messages, List<GptTool<Tfunc>> gptTools);
+    <Tfunc extends AgentToolType> Stream<GptToolResponse> getChatCompletionWithToolsStream(List<GptMessage> messages, List<GptTool<? extends AgentToolType>> gptTools);
 }

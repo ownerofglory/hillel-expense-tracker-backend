@@ -18,8 +18,10 @@ public abstract class AbstractModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Transient
+//    @Transient
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
+
     @Transient
     private LocalDateTime modifiedAt;
 }

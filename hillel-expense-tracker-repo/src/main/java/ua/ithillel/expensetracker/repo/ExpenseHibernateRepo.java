@@ -10,6 +10,7 @@ import ua.ithillel.expensetracker.model.Expense;
 import ua.ithillel.expensetracker.model.ExpenseCategory;
 import ua.ithillel.expensetracker.model.User;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +45,22 @@ public class ExpenseHibernateRepo implements ExpenseRepo {
             Query<Expense> query
                     = session.createQuery("SELECT e FROM Expense e WHERE e.user = :user", Expense.class);// JQL, HQL
             query.setParameter("user", user);
+
+            return query.getResultList();
+        }
+    }
+
+    @Override
+    public List<Expense> findByUserBetweenDates(User user, LocalDateTime from, LocalDateTime to) throws ExpenseTrackerPersistingException {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Expense> query
+                    = session.createQuery("""
+            SELECT e FROM Expense e WHERE e.user = :user      
+            AND e.createdAt BETWEEN :startDate AND :endDate                                   
+            """, Expense.class);// JQL, HQL
+            query.setParameter("user", user);
+            query.setParameter("startDate", from);
+            query.setParameter("endDate", to);
 
             return query.getResultList();
         }

@@ -5,6 +5,7 @@ import ua.ithillel.expensetracker.model.Expense;
 import ua.ithillel.expensetracker.model.ExpenseCategory;
 import ua.ithillel.expensetracker.model.User;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +37,8 @@ public interface ExpenseRepo {
      * @throws ExpenseTrackerPersistingException if any persisting error occurs
      */
     List<Expense> findByUser(User user) throws ExpenseTrackerPersistingException;
+
+    List<Expense> findByUserBetweenDates(User user, LocalDateTime from, LocalDateTime to) throws ExpenseTrackerPersistingException;
 
     /**
      * Finds an expense by a category
