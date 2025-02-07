@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ua.ithillel.expensetracker.dto.ExpenseDTO;
 import ua.ithillel.expensetracker.exception.ExpenseTrackerPersistingException;
+import ua.ithillel.expensetracker.exception.NotFoundServiceException;
+import ua.ithillel.expensetracker.exception.ServiceException;
 import ua.ithillel.expensetracker.mapper.ExpenseMapper;
 import ua.ithillel.expensetracker.model.Expense;
 import ua.ithillel.expensetracker.model.ExpenseCategory;
@@ -33,7 +35,7 @@ public class ExpenseServiceDefault implements ExpenseService {
         try {
 
             Optional<User> user = userRepo.find(userId);
-            User existingUser = user.orElseThrow();
+            User existingUser = user.orElseThrow(() -> new NotFoundServiceException("User not found"));
 
             List<Expense> expenseList = expenseRepo.findByUser(existingUser);
 
@@ -43,7 +45,7 @@ public class ExpenseServiceDefault implements ExpenseService {
 
         } catch (ExpenseTrackerPersistingException e) {
             log.error(e.getMessage());
-            throw new RuntimeException(e);
+            throw new NotFoundServiceException(e.getMessage());
         }
 
     }
@@ -77,6 +79,62 @@ public class ExpenseServiceDefault implements ExpenseService {
 
         } catch (ExpenseTrackerPersistingException e) {
             log.error(e.getMessage());
+            throw new NotFoundServiceException(e.getMessage());
+        }
+    }
+
+    @Override
+    public ExpenseDTO getExpenseById(Long id) {
+        try {
+            Optional<Expense> expense = expenseRepo.find(id);
+            Expense existingExpense = expense.orElseThrow(() -> new NotFoundServiceException("Expense not found"));
+
+            return expenseMapper.expenseToExpenseDTO(existingExpense);
+        } catch (ExpenseTrackerPersistingException e) {
+            throw new NotFoundServiceException("Error while getting expense by id");
+        }
+    }
+
+    @Override
+    public ExpenseDTO updateExpense(Long id, ExpenseDTO expenseDTO) {
+        try {
+            Optional<Expense> expenseOpt = expenseRepo.find(id);
+            Expense expense = expenseOpt.orElseThrow(() -> new NotFoundServiceException("Expense not found"));
+
+            User user = userRepo.find(expenseDTO.getUserId()).get();
+
+            Long categoryId = expenseDTO.getCategoryId();
+            ExpenseCategory expenseCategory = categoryRepo.find(categoryId).get();
+
+            expense.setAmount(expenseDTO.getAmount());
+            expense.setDescription(expenseDTO.getDescription());
+            expense.setCategory(expenseCategory);
+            expense.setUser(user);
+
+//            expense.getCategory().setExpenses(null);
+//            expense.getUser().setExpenses(null);
+
+            Optional<Expense> saved = expenseRepo.save(expense);
+            Expense udpdatedExpense = saved.orElseThrow(() -> new ServiceException("Expense could not be updated"));
+
+            return expenseMapper.expenseToExpenseDTO(udpdatedExpense);
+        } catch (ExpenseTrackerPersistingException e) {
+            throw new ServiceException("Error while updating expense by id: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public ExpenseDTO deleteExpense(Long id) {
+        try {
+            Optional<Expense> expense = expenseRepo.find(id);
+            Expense existingExpense = expense.orElseThrow(() -> new NotFoundServiceException("Expense not found"));
+
+            Optional<Expense> deleted = expenseRepo.delete(existingExpense);
+            Expense deletedExpense = deleted.orElseThrow(() -> new ServiceException("Expense could not be deleted"));
+
+            return expenseMapper.expenseToExpenseDTO(deletedExpense);
+
+        } catch (ExpenseTrackerPersistingException e) {
             throw new RuntimeException(e);
         }
     }

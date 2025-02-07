@@ -18,16 +18,16 @@ public class Expense extends AbstractModel {
     private double amount;
     private String description;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     private ExpenseCategory category;
 //
 //    @Transient
 //    private ExpenseCategory category;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     private User user;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(
             name = "t_tag_expense",
             joinColumns = @JoinColumn(name = "expense_id"),

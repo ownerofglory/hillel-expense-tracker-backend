@@ -2,7 +2,9 @@ package ua.ithillel.expensetracker.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import ua.ithillel.expensetracker.dto.ExpenseDTO;
 import ua.ithillel.expensetracker.exception.ExpenseTrackerPersistingException;
+import ua.ithillel.expensetracker.exception.ServiceException;
 import ua.ithillel.expensetracker.mapper.ExpenseMapper;
 import ua.ithillel.expensetracker.model.Expense;
 import ua.ithillel.expensetracker.model.ExpenseCategory;
@@ -32,11 +34,9 @@ public class ExpenseServiceDefaultTest {
 
     @BeforeEach
     void setUp() {
-//        userRepo = new FakeUserRepo();
         expenseRepo = mock(ExpenseRepo.class);
         expenseCategoryRepo = mock(ExpenseCategoryRepo.class);
         userRepo = mock(UserRepo.class);
-//        expenseMapper = mock(ExpenseMapper.class);
         expenseMapper = ExpenseMapper.INSTANCE;
 
         expenseService = new ExpenseServiceDefault(expenseRepo, userRepo, expenseCategoryRepo, expenseMapper);
@@ -80,7 +80,7 @@ public class ExpenseServiceDefaultTest {
 
         when(userRepo.find(anyLong())).thenReturn(Optional.empty());
 
-        assertThrows(NoSuchElementException.class, () -> expenseService.getExpensesByUserId(testId));
+        assertThrows(ServiceException.class, () -> expenseService.getExpensesByUserId(testId));
 
     }
 
@@ -173,6 +173,52 @@ public class ExpenseServiceDefaultTest {
 
 
         assertThrows(RuntimeException.class, () -> expenseService.createExpense(testExpense));
+    }
+
+    @Test
+    void getExpenseByIdTest() throws ExpenseTrackerPersistingException {
+        Long testId = 1L;
+
+        Expense mockExpense = new Expense();
+        mockExpense.setId(testId);
+        when(expenseRepo.find(anyLong())).thenReturn(Optional.of(mockExpense));
+
+        ExpenseDTO expenseById = expenseService.getExpenseById(testId);
+
+        assertNotNull(expenseById);
+        assertEquals(testId, expenseById.getId());
+    }
+
+    @Test
+    void updateExpenseTest() throws ExpenseTrackerPersistingException {
+        User user = new User();
+        user.setId(1L);
+
+        when(userRepo.find(anyLong())).thenReturn(Optional.of(user));
+        when(expenseRepo.find(anyLong())).thenReturn(Optional.of(new Expense()));
+        when(expenseRepo.save(any())).thenReturn(Optional.of(new Expense()));
+
+        ExpenseDTO testExpense = new ExpenseDTO();
+        testExpense.setId(1000L);
+        testExpense.setUserId(1L);
+        ExpenseDTO expenseDTO = expenseService.updateExpense(1L, testExpense);
+
+        assertNotNull(expenseDTO);
+
+    }
+
+    @Test
+    void deleteExpenseTest() throws ExpenseTrackerPersistingException {
+        Long testId = 1L;
+
+        User user = new User();
+        user.setId(1L);
+
+        when(userRepo.find(anyLong())).thenReturn(Optional.of(user));
+        when(expenseRepo.find(anyLong())).thenReturn(Optional.of(new Expense()));
+        when(expenseRepo.delete(any())).thenReturn(Optional.of(new Expense()));
+
+        expenseService.deleteExpense(testId);
     }
 
 }

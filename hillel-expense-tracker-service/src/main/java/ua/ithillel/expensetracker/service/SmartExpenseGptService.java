@@ -3,15 +3,13 @@ package ua.ithillel.expensetracker.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ua.ithillel.expensetracker.client.GPTClient;
-import ua.ithillel.expensetracker.model.GptMessage;
-import ua.ithillel.expensetracker.model.GptMessageContent;
-import ua.ithillel.expensetracker.model.GptResponse;
 import ua.ithillel.expensetracker.dto.CategorisingResponseDTO;
 import ua.ithillel.expensetracker.dto.ExpenseDTO;
 import ua.ithillel.expensetracker.exception.ExpenseTrackerPersistingException;
+import ua.ithillel.expensetracker.exception.NotFoundServiceException;
+import ua.ithillel.expensetracker.exception.ServiceErrorException;
 import ua.ithillel.expensetracker.exception.ServiceException;
-import ua.ithillel.expensetracker.model.ExpenseCategory;
-import ua.ithillel.expensetracker.model.User;
+import ua.ithillel.expensetracker.model.*;
 import ua.ithillel.expensetracker.repo.ExpenseCategoryRepo;
 import ua.ithillel.expensetracker.repo.UserRepo;
 import ua.ithillel.expensetracker.util.Base64Converter;
@@ -83,9 +81,9 @@ public class SmartExpenseGptService implements SmartExpenseService {
 
             return expense;
         } catch (ExpenseTrackerPersistingException e) {
-            throw new ServiceException("Unable categorise expense: " + e.getMessage());
+            throw new NotFoundServiceException("Unable categorise expense: " + e.getMessage());
         } catch (IOException e) {
-            throw new ServiceException("Unable load chat completion context");
+            throw new ServiceErrorException("Unable load chat completion context");
         }
     }
 
@@ -139,9 +137,9 @@ public class SmartExpenseGptService implements SmartExpenseService {
 
             return expense;
         } catch (IOException e) {
-            throw new ServiceException("Unable to categorise expense. Error when converting the image: " + e.getMessage());
+            throw new ServiceErrorException("Unable to categorise expense. Error when converting the image: " + e.getMessage());
         } catch (ExpenseTrackerPersistingException e) {
-            throw new ServiceException("Unable to categorise expense: " + e.getMessage());
+            throw new NotFoundServiceException("Unable to categorise expense: " + e.getMessage());
         }
     }
 

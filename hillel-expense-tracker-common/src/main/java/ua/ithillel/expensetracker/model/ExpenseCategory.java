@@ -1,10 +1,7 @@
 package ua.ithillel.expensetracker.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Set;
 
@@ -14,6 +11,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "t_category")
+@EqualsAndHashCode(exclude = {"expenses", "user"}, callSuper = false)
 public class ExpenseCategory extends AbstractModel {
     private String name;
 

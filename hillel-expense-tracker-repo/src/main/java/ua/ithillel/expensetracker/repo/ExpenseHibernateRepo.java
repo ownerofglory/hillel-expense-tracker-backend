@@ -22,7 +22,9 @@ public class ExpenseHibernateRepo implements ExpenseRepo {
     @Override
     public Optional<Expense> find(Long id) throws ExpenseTrackerPersistingException {
         try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
             Expense expense = session.find(Expense.class, id);
+            session.getTransaction().commit();
             return Optional.ofNullable(expense);
         }
     }

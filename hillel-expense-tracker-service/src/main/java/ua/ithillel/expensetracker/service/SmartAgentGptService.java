@@ -10,7 +10,8 @@ import ua.ithillel.expensetracker.client.tool.GptTool;
 import ua.ithillel.expensetracker.client.tool.GptToolChoice;
 import ua.ithillel.expensetracker.dto.ExpenseDTO;
 import ua.ithillel.expensetracker.exception.ExpenseTrackerPersistingException;
-import ua.ithillel.expensetracker.exception.ServiceException;
+import ua.ithillel.expensetracker.exception.NotFoundServiceException;
+import ua.ithillel.expensetracker.exception.ServiceErrorException;
 import ua.ithillel.expensetracker.mapper.ExpenseMapper;
 import ua.ithillel.expensetracker.model.*;
 import ua.ithillel.expensetracker.repo.ExpenseCategoryRepo;
@@ -45,7 +46,7 @@ public class SmartAgentGptService implements SmartAgentService {
     public Stream<GptToolResponse> getChatCompletionWithTools(List<GptMessage> messages, Long userId) {
         try {
             Optional<User> user = userRepo.find(userId);
-            User existingUser = user.orElseThrow(() -> new ServiceException("User not found"));
+            User existingUser = user.orElseThrow(() -> new NotFoundServiceException("User not found"));
 
             List<ExpenseCategory> categories = expenseCategoryRepo.findByUser(existingUser);
             String categoriesStr = categories.stream()
@@ -77,12 +78,10 @@ public class SmartAgentGptService implements SmartAgentService {
             Stream<GptToolResponse> chatCompletionWithToolsStream = gptClient.getChatCompletionWithToolsStream(messagesToSend, tools);
 
             return chatCompletionWithToolsStream.map(resp -> processGptToolResponse(resp, messagesToSend));
-        } catch (ServiceException e) {
-            throw new RuntimeException(e);
-        } catch (ExpenseTrackerPersistingException e) {
-            throw new RuntimeException(e);
+        }  catch (ExpenseTrackerPersistingException e) {
+            throw new NotFoundServiceException("User not found");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new ServiceErrorException("Service error: " + e.getMessage());
         }
     }
 
@@ -110,7 +109,7 @@ public class SmartAgentGptService implements SmartAgentService {
                     }
                 }
             } catch (JsonProcessingException | ExpenseTrackerPersistingException e) {
-                throw new RuntimeException(e);
+                throw new ServiceErrorException("Unable to process tool response: " + e.getMessage());
             }
         }
 
