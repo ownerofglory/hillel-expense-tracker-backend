@@ -12,6 +12,7 @@ import java.util.Set;
 @Entity
 @Table(name = "t_category")
 @EqualsAndHashCode(exclude = {"expenses", "user"}, callSuper = false)
+@ToString(exclude = {"expenses", "user"})
 public class ExpenseCategory extends AbstractModel {
     private String name;
 

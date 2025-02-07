@@ -33,7 +33,12 @@ public class ExpenseHibernateRepo implements ExpenseRepo {
     public Optional<Expense> save(Expense expense) throws ExpenseTrackerPersistingException {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.persist(expense);
+
+            if (expense.getId() == null) {
+                session.persist(expense);
+            }  else {
+                session.merge(expense);
+            }
             session.flush();
 
             session.getTransaction().commit();

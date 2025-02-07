@@ -194,13 +194,20 @@ public class ExpenseServiceDefaultTest {
         User user = new User();
         user.setId(1L);
 
+        ExpenseCategory mockCategory = new ExpenseCategory();
+        mockCategory.setId(1L);
+        Expense mockExpense = new Expense();
+        mockExpense.setCategory(mockCategory);
+
         when(userRepo.find(anyLong())).thenReturn(Optional.of(user));
-        when(expenseRepo.find(anyLong())).thenReturn(Optional.of(new Expense()));
-        when(expenseRepo.save(any())).thenReturn(Optional.of(new Expense()));
+        when(expenseCategoryRepo.find(anyLong())).thenReturn(Optional.of(mockCategory));
+        when(expenseRepo.find(anyLong())).thenReturn(Optional.of(mockExpense));
+        when(expenseRepo.save(any())).thenReturn(Optional.of(mockExpense));
 
         ExpenseDTO testExpense = new ExpenseDTO();
         testExpense.setId(1000L);
         testExpense.setUserId(1L);
+        testExpense.setCategoryId(1L);
         ExpenseDTO expenseDTO = expenseService.updateExpense(1L, testExpense);
 
         assertNotNull(expenseDTO);
