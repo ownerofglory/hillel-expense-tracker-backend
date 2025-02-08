@@ -31,7 +31,8 @@ public class User extends AbstractModel {
     @OneToMany(cascade = {
             CascadeType.PERSIST,
             CascadeType.DETACH,
-            CascadeType.REMOVE}, fetch = FetchType.EAGER)
+            CascadeType.REMOVE
+    }, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private Set<Expense> expenses;
 }

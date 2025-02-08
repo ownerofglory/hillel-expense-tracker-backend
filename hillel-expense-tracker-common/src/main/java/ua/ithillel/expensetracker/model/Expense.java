@@ -17,11 +17,7 @@ public class Expense extends AbstractModel {
     private String description;
 
     @ManyToOne
-//            (cascade = CascadeType.MERGE)
     private ExpenseCategory category;
-//
-//    @Transient
-//    private ExpenseCategory category;
 
     @ManyToOne(cascade = CascadeType.MERGE)
     private User user;
