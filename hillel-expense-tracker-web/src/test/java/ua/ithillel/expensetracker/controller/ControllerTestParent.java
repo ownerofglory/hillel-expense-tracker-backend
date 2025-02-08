@@ -1,5 +1,6 @@
 package ua.ithillel.expensetracker.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -15,4 +16,7 @@ public class ControllerTestParent {
 
     @Autowired
     protected GlobalExceptionHandler globalExceptionHandler;
+
+    @Autowired
+    protected ObjectMapper objectMapper;
 }
