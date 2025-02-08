@@ -71,12 +71,9 @@ public class UserSpringJdbcDao implements UserDao {
             throw new DaoException("Could not save user");
         }
 
-        Number key = keyHolder.getKey();
-        if (key == null) {
-            throw new DaoException("Could not save user");
-        }
-
-        long savedUserId = key.longValue();
+        long savedUserId = (Integer) keyHolder.getKeyList()
+                .get(0)
+                .get("ID");
 
 
         user.setId(savedUserId);

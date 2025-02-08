@@ -8,7 +8,7 @@ import ua.ithillel.expensetracker.dto.ExpenseCategoryDTO;
 import ua.ithillel.expensetracker.model.ExpenseCategory;
 import ua.ithillel.expensetracker.model.User;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface ExpenseCategoryMapper {
     ExpenseCategoryMapper INSTANCE = Mappers.getMapper(ExpenseCategoryMapper.class);
     ExpenseMapper EXPENSE_MAPPER = Mappers.getMapper(ExpenseMapper.class);

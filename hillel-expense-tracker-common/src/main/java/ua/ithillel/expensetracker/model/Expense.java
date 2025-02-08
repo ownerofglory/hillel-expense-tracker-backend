@@ -1,10 +1,7 @@
 package ua.ithillel.expensetracker.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Set;
 
@@ -14,20 +11,18 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "t_expense")
+@ToString(exclude = {"tags", "user", "category"})
 public class Expense extends AbstractModel {
     private double amount;
     private String description;
 
     @ManyToOne
     private ExpenseCategory category;
-//
-//    @Transient
-//    private ExpenseCategory category;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     private User user;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(
             name = "t_tag_expense",
             joinColumns = @JoinColumn(name = "expense_id"),
