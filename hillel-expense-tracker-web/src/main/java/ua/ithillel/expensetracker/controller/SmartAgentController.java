@@ -19,7 +19,6 @@ import java.util.stream.Stream;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/agent")
-@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600, methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.OPTIONS})
 public class SmartAgentController {
     private final SmartAgentService smartAgentService;
 

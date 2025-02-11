@@ -43,6 +43,7 @@
         <jackson.schema.version>2.18.2</jackson.schema.version>
         <wiremock.version>3.9.1</wiremock.version>
         <twelve-monkeys.imageoio.version>3.12.0</twelve-monkeys.imageoio.version>
+        <jakarta.servlet-api.version>6.1.0</jakarta.servlet-api.version>
         <spring.version>6.2.2</spring.version>
         <aspectj.version>1.9.22.1</aspectj.version>
     </properties>
@@ -183,7 +184,7 @@
             <dependency>
                 <groupId>jakarta.servlet</groupId>
                 <artifactId>jakarta.servlet-api</artifactId>
-                <version>6.1.0</version>
+                <version>${jakarta.servlet-api.version}</version>
                 <scope>provided</scope>
             </dependency>
             <dependency>
