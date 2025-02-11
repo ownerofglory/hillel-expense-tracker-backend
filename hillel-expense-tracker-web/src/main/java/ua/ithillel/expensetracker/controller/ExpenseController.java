@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ua.ithillel.expensetracker.dto.ExpenseDTO;
+import ua.ithillel.expensetracker.dto.PaginationDTO;
 import ua.ithillel.expensetracker.service.ExpenseService;
 
 import java.util.List;
@@ -17,10 +18,19 @@ public class ExpenseController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public @ResponseBody
-    ResponseEntity<List<ExpenseDTO>> getAll(@RequestParam(name = "userId") Long userId) {
-        List<ExpenseDTO> expensesByUserId = expenseService.getExpensesByUserId(userId);
+    ResponseEntity<PaginationDTO<List<ExpenseDTO>>> getAll(@RequestParam(name = "userId") Long userId,
+                                                          @RequestParam(name = "page", required = false) Integer page,
+                                                           @RequestParam(name = "size", required = false) Integer size) {
+        if (page != null && size != null) {
+            PaginationDTO<List<ExpenseDTO>> resp = expenseService.getExpensesByUserId(userId, page, size);
+            return ResponseEntity.ok(resp);
+        }
 
-        return ResponseEntity.ok(expensesByUserId);
+        List<ExpenseDTO> expensesByUserId = expenseService.getExpensesByUserId(userId);
+        PaginationDTO<List<ExpenseDTO>> resp = new PaginationDTO<>();
+        resp.setData(expensesByUserId);
+
+        return ResponseEntity.ok(resp);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,

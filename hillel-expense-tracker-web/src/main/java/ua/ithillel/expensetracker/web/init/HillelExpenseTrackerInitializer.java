@@ -18,6 +18,8 @@ public class HillelExpenseTrackerInitializer implements WebApplicationInitialize
 
         DispatcherServlet dispatcherServlet = new DispatcherServlet(context);
         ServletRegistration.Dynamic register = servletContext.addServlet("dispatcherServlet", dispatcherServlet);
+
+        register.setAsyncSupported(true);
         register.setLoadOnStartup(1);
         register.addMapping("/api/*");
 

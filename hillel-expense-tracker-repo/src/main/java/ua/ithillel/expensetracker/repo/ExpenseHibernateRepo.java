@@ -6,9 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import ua.ithillel.expensetracker.exception.ExpenseTrackerPersistingException;
-import ua.ithillel.expensetracker.model.Expense;
-import ua.ithillel.expensetracker.model.ExpenseCategory;
-import ua.ithillel.expensetracker.model.User;
+import ua.ithillel.expensetracker.model.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -54,6 +52,26 @@ public class ExpenseHibernateRepo implements ExpenseRepo {
             query.setParameter("user", user);
 
             return query.getResultList();
+        }
+    }
+
+    @Override
+    public PaginationResponse<List<Expense>> findByUser(User user, PaginationReq paginationReq) throws ExpenseTrackerPersistingException {
+        try (Session session = sessionFactory.openSession()) {
+            Query<Expense> query
+                    = session.createQuery("SELECT e FROM Expense e WHERE e.user = :user", Expense.class);// JQL, HQL
+            query.setParameter("user", user);
+            query.setMaxResults(paginationReq.getSize());
+            query.setFirstResult(paginationReq.getSize() * (paginationReq.getPage() - 1));
+
+            List<Expense> resultList = query.getResultList();
+
+            PaginationResponse<List<Expense>> resp = new PaginationResponse<>();
+            resp.setData(resultList);
+            resp.setSize(resultList.size());
+            resp.setPage(paginationReq.getPage());
+
+            return resp;
         }
     }
 
