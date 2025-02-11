@@ -7,6 +7,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import ua.ithillel.expensetracker.exception.GlobalExceptionHandler;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 @Configuration
 public class WebTestConfig {
     @Bean
@@ -19,5 +22,10 @@ public class WebTestConfig {
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public ObjectMapper objectMapper() {
         return new ObjectMapper();
+    }
+
+    @Bean(destroyMethod = "shutdown", name = "executor")
+    public ExecutorService executorService() {
+        return Executors.newFixedThreadPool(1);
     }
 }

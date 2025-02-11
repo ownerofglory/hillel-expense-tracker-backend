@@ -1,9 +1,7 @@
 package ua.ithillel.expensetracker.repo;
 
 import ua.ithillel.expensetracker.exception.ExpenseTrackerPersistingException;
-import ua.ithillel.expensetracker.model.Expense;
-import ua.ithillel.expensetracker.model.ExpenseCategory;
-import ua.ithillel.expensetracker.model.User;
+import ua.ithillel.expensetracker.model.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -37,6 +35,8 @@ public interface ExpenseRepo {
      * @throws ExpenseTrackerPersistingException if any persisting error occurs
      */
     List<Expense> findByUser(User user) throws ExpenseTrackerPersistingException;
+
+    PaginationResponse<List<Expense>> findByUser(User user, PaginationReq paginationReq) throws ExpenseTrackerPersistingException;
 
     List<Expense> findByUserBetweenDates(User user, LocalDateTime from, LocalDateTime to) throws ExpenseTrackerPersistingException;
 
