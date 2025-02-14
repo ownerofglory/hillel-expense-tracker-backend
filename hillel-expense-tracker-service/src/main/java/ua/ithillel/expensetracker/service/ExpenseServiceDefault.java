@@ -67,6 +67,7 @@ public class ExpenseServiceDefault implements ExpenseService {
             paginationDTO.setData(expenseDTOS);
             paginationDTO.setSize(size);
             paginationDTO.setPage(page);
+            paginationDTO.setCount(byUser.getCount());
 
             return paginationDTO;
 

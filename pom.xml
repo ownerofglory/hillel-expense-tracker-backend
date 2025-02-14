@@ -4,6 +4,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.4.2</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
     <groupId>ua.ithillel.expensetracker</groupId>
     <artifactId>hillel-expense-tracker</artifactId>
     <version>1.0-SNAPSHOT</version>
@@ -17,6 +24,7 @@
         <module>hillel-expense-tracker-dao</module>
         <module>hillel-expense-tracker-repo</module>
         <module>hillel-expense-tracker-web</module>
+        <module>hillel-expense-tracker-web-boot</module>
     </modules>
 
     <properties>

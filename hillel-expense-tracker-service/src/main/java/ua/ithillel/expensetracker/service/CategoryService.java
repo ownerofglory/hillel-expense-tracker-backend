@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface CategoryService {
     List<ExpenseCategoryDTO> findAllCategoriesByUserId(Long userId) throws ServiceException;
+    ExpenseCategoryDTO findCategoryById(Long id) throws ServiceException;
 }

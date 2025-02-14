@@ -8,6 +8,7 @@ import ua.ithillel.expensetracker.client.ExternalCategoryClient;
 import ua.ithillel.expensetracker.dao.UserDao;
 import ua.ithillel.expensetracker.dto.ExpenseCategoryDTO;
 import ua.ithillel.expensetracker.exception.DaoException;
+import ua.ithillel.expensetracker.exception.ServiceException;
 import ua.ithillel.expensetracker.model.User;
 
 import java.util.ArrayList;
@@ -63,5 +64,10 @@ public class CategoryInMemoryService implements CategoryService {
         } catch (DaoException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public ExpenseCategoryDTO findCategoryById(Long id) throws ServiceException {
+        return null;
     }
 }

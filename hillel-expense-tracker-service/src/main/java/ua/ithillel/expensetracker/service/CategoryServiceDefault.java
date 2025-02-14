@@ -39,4 +39,17 @@ public class CategoryServiceDefault implements CategoryService {
             throw new ServiceException(e.getMessage());
         }
     }
+
+    @Override
+    public ExpenseCategoryDTO findCategoryById(Long id) throws ServiceException {
+        try {
+            Optional<ExpenseCategory> expenseCategoryOpt = expenseCategoryRepo.find(id);
+            ExpenseCategory expenseCategory = expenseCategoryOpt.orElseThrow(() -> new ServiceException("Category not found"));
+
+
+            return expenseCategoryMapper.expenseCategoryToDTO(expenseCategory);
+        } catch (ExpenseTrackerPersistingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
