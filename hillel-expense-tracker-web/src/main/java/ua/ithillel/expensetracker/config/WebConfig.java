@@ -40,6 +40,7 @@ public class WebConfig implements WebMvcConfigurer {
         };
     }
 
+
     @Bean
     public StandardServletMultipartResolver multipartResolver() {
         return new StandardServletMultipartResolver();
