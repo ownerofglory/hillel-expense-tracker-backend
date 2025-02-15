@@ -3,22 +3,22 @@ package ua.ithillel.expensetracker.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ua.ithillel.expensetracker.client.GPTClient;
 import ua.ithillel.expensetracker.client.tool.AgentToolType;
 import ua.ithillel.expensetracker.client.tool.GptTool;
 import ua.ithillel.expensetracker.client.tool.GptToolChoice;
-import ua.ithillel.expensetracker.dto.ExpenseDTO;
 import ua.ithillel.expensetracker.exception.ExpenseTrackerPersistingException;
 import ua.ithillel.expensetracker.exception.NotFoundServiceException;
 import ua.ithillel.expensetracker.exception.ServiceErrorException;
-import ua.ithillel.expensetracker.mapper.ExpenseMapper;
 import ua.ithillel.expensetracker.model.*;
 import ua.ithillel.expensetracker.repo.ExpenseCategoryRepo;
-import ua.ithillel.expensetracker.repo.ExpenseRepo;
 import ua.ithillel.expensetracker.repo.UserRepo;
-import ua.ithillel.expensetracker.tools.GetExpensesBetweenDateToolSchema;
-import ua.ithillel.expensetracker.tools.GetExpensesBetweenDatesArgs;
+import ua.ithillel.expensetracker.tools.definition.AgentToolDef;
+import ua.ithillel.expensetracker.tools.exception.ToolExecException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -29,18 +29,22 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Service
+@Setter
 public class SmartAgentGptService implements SmartAgentService {
     private final GPTClient gptClient;
     private final UserRepo userRepo;
     private final ExpenseCategoryRepo expenseCategoryRepo;
-    private final ExpenseRepo expenseRepo;
-    private final ExpenseMapper expenseMapper;
     private final ObjectMapper objectMapper;
+
+    @Qualifier("agentTools")
+    @Autowired
+    private Map<String, AgentToolDef> tools;
 
     @Override
     public Stream<GptToolResponse> getChatCompletionWithTools(List<GptMessage> messages, Long userId) {
@@ -67,17 +71,18 @@ public class SmartAgentGptService implements SmartAgentService {
             messagesToSend.addAll(messages);
 
 
-            GptTool<GetExpensesBetweenDateToolSchema> getExpensesBetweenDateToolGptTool = new GptTool<>();
-            GetExpensesBetweenDateToolSchema getExpensesBetweenDateTool = new GetExpensesBetweenDateToolSchema("GetExpensesBetweenDateTool", "get the expenses between from and to dates for a given user");
-            getExpensesBetweenDateToolGptTool.setName(getExpensesBetweenDateTool.getName());
-            getExpensesBetweenDateToolGptTool.setDescription(getExpensesBetweenDateTool.getDescription());
-            getExpensesBetweenDateToolGptTool.setParameters(getExpensesBetweenDateTool);
+            List<GptTool<AgentToolType>> toolList = tools.values().stream().map(tool -> {
+                GptTool<AgentToolType> objectGptTool = new GptTool<>();
+                objectGptTool.setName(tool.getSchema().getName());
+                objectGptTool.setDescription(tool.getSchema().getDescription());
+                objectGptTool.setParameters(tool.getSchema());
+                return objectGptTool;
+            }).toList();
 
-            List<GptTool<? extends AgentToolType>> tools = List.of(getExpensesBetweenDateToolGptTool);
+            Stream<GptToolResponse> chatCompletionWithToolsStream = gptClient.getChatCompletionWithToolsStream(messagesToSend, toolList);
 
-            Stream<GptToolResponse> chatCompletionWithToolsStream = gptClient.getChatCompletionWithToolsStream(messagesToSend, tools);
-
-            return chatCompletionWithToolsStream.map(resp -> processGptToolResponse(resp, messagesToSend));
+            Stream<GptToolResponse> resultStream = chatCompletionWithToolsStream.map(resp -> processGptToolResponse(resp, messagesToSend));
+            return Stream.concat(resultStream, Stream.of(new GptToolResponse()));
         }  catch (ExpenseTrackerPersistingException e) {
             throw new NotFoundServiceException("User not found");
         } catch (IOException e) {
@@ -85,13 +90,6 @@ public class SmartAgentGptService implements SmartAgentService {
         }
     }
 
-    // Tools:
-    private List<Expense> getExpensesBetweenDates(GetExpensesBetweenDatesArgs args) throws ExpenseTrackerPersistingException {
-        Long userId = args.getUserId();
-        User user = userRepo.find(userId).orElseThrow();
-
-        return expenseRepo.findByUserBetweenDates(user, args.getFrom(), args.getTo());
-    }
 
     private GptToolResponse processGptToolResponse(GptToolResponse resp, List<GptMessage> messagesToSend) {
         GptToolChoice tool = resp.getTool();
@@ -101,48 +99,88 @@ public class SmartAgentGptService implements SmartAgentService {
                 String args = tool.getArgs();
 
                 if (toolName != null) {
-                    switch (toolName) {
-                        case "GetExpensesBetweenDateTool" -> {
-                            GetExpensesBetweenDatesArgs funcArgs = objectMapper.readValue(args, GetExpensesBetweenDatesArgs.class);
-                            return executeGetExpensesBetweenDateTool(funcArgs, tool,messagesToSend);
-                        }
+                    AgentToolDef agentToolDef = tools.get(toolName);
+                    if (agentToolDef == null) {
+                        GptToolChoice gptToolChoice = new GptToolChoice("", "", "", "");
+                        GptToolResponse gptToolResponse = new GptToolResponse();
+                        gptToolResponse.setTool(gptToolChoice);
+
+                        return gptToolResponse;
                     }
+                    Object resultObj = agentToolDef.execute(args);
+                    String toolCallResult = objectMapper.writeValueAsString(resultObj);
+
+
+                    GptMessage gptAssistantMessage = createGptToolRespMessage(tool.getToolRaw());
+
+                    GptMessage gptMessage = createGptToolResultMessage(tool.getId(), toolCallResult);
+
+                    List<GptMessage> resultMessages = new ArrayList<>(messagesToSend);
+                    resultMessages.add(gptAssistantMessage);
+                    resultMessages.add(gptMessage);
+
+                    GptResponse<String> chatCompletion = gptClient.getChatCompletion(resultMessages);
+                    GptToolResponse gptToolResponse = new GptToolResponse();
+                    gptToolResponse.setContent(chatCompletion.getContent());
+
+                    return gptToolResponse;
                 }
-            } catch (JsonProcessingException | ExpenseTrackerPersistingException e) {
+            } catch (JsonProcessingException e) {
                 throw new ServiceErrorException("Unable to process tool response: " + e.getMessage());
+            } catch (ToolExecException e) {
+                throw new RuntimeException(e);
             }
         }
 
         return resp;
     }
 
-    private GptToolResponse executeGetExpensesBetweenDateTool(GetExpensesBetweenDatesArgs funcArgs, GptToolChoice tool, List<GptMessage> messagesToSend) throws ExpenseTrackerPersistingException, JsonProcessingException {
-        List<Expense> expenses = getExpensesBetweenDates(funcArgs);
-        List<ExpenseDTO> expenseDTOS = expenses.stream().map(expenseMapper::expenseToExpenseDTO).toList();
-        String toolCallResult = objectMapper.writeValueAsString(expenseDTOS);
+    private Stream<GptToolResponse> processGptToolResponseStream(GptToolResponse resp, List<GptMessage> messagesToSend) {
+        GptToolChoice tool = resp.getTool();
+        if (tool != null) {
+            try {
+                String toolName = tool.getToolName();
+                String args = tool.getArgs();
 
-        GptMessage gptAssistantMessage = createGptToolRespMessage(tool.getToolRaw());
+                if (toolName != null) {
+                    AgentToolDef agentToolDef = tools.get(toolName);
+                    if (agentToolDef == null) {
+                        GptToolChoice gptToolChoice = new GptToolChoice("", "", "", "");
+                        GptToolResponse gptToolResponse = new GptToolResponse();
+                        gptToolResponse.setTool(gptToolChoice);
 
-        GptMessage gptMessage = createGptToolResultMessage(tool.getId(), toolCallResult);
+                        return Stream.of(gptToolResponse, null);
+                    }
+                    Object resultObj = agentToolDef.execute(args);
+                    String toolCallResult = objectMapper.writeValueAsString(resultObj);
 
-        List<GptMessage> resultMessages = new ArrayList<>(messagesToSend);
-        resultMessages.add(gptAssistantMessage);
-        resultMessages.add(gptMessage);
 
-        GptResponse<String> chatCompletion = gptClient.getChatCompletion(resultMessages);
-        GptToolResponse gptToolResponse = new GptToolResponse();
-        gptToolResponse.setContent(chatCompletion.getContent());
-        return gptToolResponse;
+                    GptMessage gptAssistantMessage = createGptToolRespMessage(tool.getToolRaw());
+
+                    GptMessage gptMessage = createGptToolResultMessage(tool.getId(), toolCallResult);
+
+                    List<GptMessage> resultMessages = new ArrayList<>(messagesToSend);
+                    resultMessages.add(gptAssistantMessage);
+                    resultMessages.add(gptMessage);
+
+                    GptResponse<String> chatCompletion = gptClient.getChatCompletion(resultMessages);
+                    GptToolResponse gptToolResponse = new GptToolResponse();
+                    gptToolResponse.setContent(chatCompletion.getContent());
+
+                    return Stream.of(gptToolResponse, null);
+                }
+            } catch (JsonProcessingException e) {
+                throw new ServiceErrorException("Unable to process tool response: " + e.getMessage());
+            } catch (ToolExecException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return Stream.of(resp, null);
     }
+
 
     private GptMessage createGptTextMessage(String role, String text) {
-        GptMessageContent gptMessageContent = new GptMessageContent();
-        gptMessageContent.setType(GptMessageContent.CONTENT_TYPE_TEXT);
-        gptMessageContent.setTextContent(text);
-        return new GptMessage(role, gptMessageContent);
-    }
-
-    private GptMessage createGptContextMessage(String role, String text) {
         GptMessageContent gptMessageContent = new GptMessageContent();
         gptMessageContent.setType(GptMessageContent.CONTENT_TYPE_TEXT);
         gptMessageContent.setTextContent(text);

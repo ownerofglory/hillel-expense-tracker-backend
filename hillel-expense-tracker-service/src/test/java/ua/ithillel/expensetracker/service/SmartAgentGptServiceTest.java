@@ -41,7 +41,10 @@ public class SmartAgentGptServiceTest extends ServiceTestParent {
         MockitoAnnotations.openMocks(this);
 
         smartAgentGptService = new SmartAgentGptService(
-                gptClient, userRepo, expenseCategoryRepo, expenseRepo, expenseMapper, objectMapper);
+                gptClient, userRepo, expenseCategoryRepo, objectMapper);
+
+        smartAgentGptService.setTools(tools);
+
     }
     
     @Test
@@ -80,13 +83,13 @@ public class SmartAgentGptServiceTest extends ServiceTestParent {
         GptToolChoice gptToolChoice = new GptToolChoice("id", "toolname", "{}", "{}");
         gptToolResponse.setTool(gptToolChoice);
         when(gptClient.getChatCompletionWithToolsStream(anyList(), anyList())).thenReturn(Stream.of(gptToolResponse));
+        when(gptClient.getChatCompletion(anyList())).thenReturn(new GptToolResponse());
 
         Stream<GptToolResponse> chatCompletionWithTools = smartAgentGptService.getChatCompletionWithTools(messages, userId);
 
         assertNotNull(chatCompletionWithTools);
         chatCompletionWithTools.forEach(r -> {
             assertNotNull(r);
-            assertNotNull(r.getTool());
         });
     }
 }

@@ -13,7 +13,6 @@ import ua.ithillel.expensetracker.service.SmartAgentService;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.stream.Stream;
 
 @RestController
@@ -30,8 +29,7 @@ public class SmartAgentController {
     public SseEmitter getChatCompletion(@RequestParam("userId") Long userId,
                                         @RequestBody List<GptMessage> messages) {
         SseEmitter emitter = new SseEmitter();
-        ExecutorService sseMvcExecutor = Executors.newSingleThreadExecutor();
-        sseMvcExecutor.execute(() -> {
+        executor.execute(() -> {
             try {
                 Stream<GptToolResponse> chatCompletionWithTools = smartAgentService.getChatCompletionWithTools(messages, userId);
 

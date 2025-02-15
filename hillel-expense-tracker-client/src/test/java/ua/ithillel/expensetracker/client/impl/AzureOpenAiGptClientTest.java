@@ -93,11 +93,11 @@ public class AzureOpenAiGptClientTest {
                 gptMessage2, gptToolResultMessage
         );
 
-        GptTool<FuncParams> tool = new GptTool<>();
+        GptTool<AgentToolType> tool = new GptTool<>();
         tool.setName("StoreUser");
         tool.setDescription("Stores user by given name and age and returns saved user");
         tool.setParameters(new FuncParams());
-        List<GptTool<? extends AgentToolType>> tools = List.of(
+        List<GptTool<AgentToolType>> tools = List.of(
                 tool
         );
 
@@ -126,11 +126,11 @@ public class AzureOpenAiGptClientTest {
                 gptMessage2
         );
 
-        GptTool<FuncParams> tool = new GptTool<>();
+        GptTool<AgentToolType> tool = new GptTool<>();
         tool.setName("StoreUser");
         tool.setDescription("Stores user by given name and age and returns saved user");
         tool.setParameters(new FuncParams());
-        List<GptTool<? extends AgentToolType>> tools = List.of(
+        List<GptTool<AgentToolType>> tools = List.of(
                 tool
         );
 
@@ -164,11 +164,11 @@ public class AzureOpenAiGptClientTest {
                 gptMessage2
         );
 
-        GptTool<FuncParams> tool = new GptTool<>();
+        GptTool<AgentToolType> tool = new GptTool<>();
         tool.setName("StoreUser");
         tool.setDescription("Stores user by given name and age and returns saved user");
         tool.setParameters(new FuncParams());
-        List<GptTool<? extends AgentToolType>> tools = List.of(
+        List<GptTool<AgentToolType>> tools = List.of(
             tool
         );
 
@@ -203,11 +203,11 @@ public class AzureOpenAiGptClientTest {
                 gptMessage2
         );
 
-        GptTool<FuncParams> tool = new GptTool<>();
+        GptTool<AgentToolType> tool = new GptTool<>();
         tool.setName("StoreUser");
         tool.setDescription("Test prompt");
         tool.setParameters(new FuncParams());
-        List<GptTool<? extends AgentToolType>> tools = List.of(
+        List<GptTool<AgentToolType>> tools = List.of(
                 tool
         );
 

@@ -3,12 +3,16 @@ package ua.ithillel.expensetracker.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ua.ithillel.expensetracker.config.ServiceTestConfig;
 import ua.ithillel.expensetracker.mapper.ExpenseMapper;
+import ua.ithillel.expensetracker.tools.definition.AgentToolDef;
 import ua.ithillel.expensetracker.util.Base64Converter;
 import ua.ithillel.expensetracker.util.ImageConvertor;
+
+import java.util.Map;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = ServiceTestConfig.class)
@@ -24,4 +28,8 @@ public class ServiceTestParent {
 
     @Autowired
     protected ExpenseMapper expenseMapper;
+
+    @Autowired
+    @Qualifier("agentTools")
+    protected Map<String, AgentToolDef> tools;
 }
