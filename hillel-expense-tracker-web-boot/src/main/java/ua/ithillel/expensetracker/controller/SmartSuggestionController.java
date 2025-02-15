@@ -20,7 +20,7 @@ public class SmartSuggestionController {
 
     @PostMapping(path = "/prompt", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ExpenseDTO> createExpense(@RequestBody SuggestionDTO suggestionDTO) {
+    public ResponseEntity<ExpenseDTO> categoriseExpense(@RequestBody SuggestionDTO suggestionDTO) {
         ExpenseDTO expenseDTO = smartExpenseService.suggestExpenseByPrompt(suggestionDTO.getPrompt(), suggestionDTO.getUserId());
 
         return ResponseEntity.ok(expenseDTO);
