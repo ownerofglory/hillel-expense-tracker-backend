@@ -29,9 +29,10 @@ public class SmartAgentControllerTest extends ControllerTestParent {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         smartAgentController = new SmartAgentController(smartAgentService);
+        smartAgentController.setExecutor(executorService);
 
         mockMvc = MockMvcBuilders.standaloneSetup(smartAgentController)
                 .setControllerAdvice(globalExceptionHandler)

@@ -1,6 +1,7 @@
 package ua.ithillel.expensetracker.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
@@ -18,6 +19,7 @@ import java.util.stream.Stream;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/agent")
+@Setter
 public class SmartAgentController {
     private final SmartAgentService smartAgentService;
 
