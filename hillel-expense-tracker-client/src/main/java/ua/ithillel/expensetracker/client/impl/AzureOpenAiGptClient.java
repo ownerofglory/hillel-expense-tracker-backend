@@ -132,7 +132,7 @@ public class AzureOpenAiGptClient implements GPTClient {
     }
 
     @Override
-    public <Tfunc extends AgentToolType> GptToolResponse getChatCompletionWithTools(List<GptMessage> messages, List<GptTool<? extends AgentToolType>> gptTools) {
+    public GptToolResponse getChatCompletionWithTools(List<GptMessage> messages, List<GptTool<AgentToolType>> gptTools) {
         try {
             String model = System.getenv("OPENAI_MODEL");
             if (model == null || model.isEmpty()) {
@@ -177,7 +177,7 @@ public class AzureOpenAiGptClient implements GPTClient {
     }
 
     @Override
-    public <Tfunc extends AgentToolType> Stream<GptToolResponse> getChatCompletionWithToolsStream(List<GptMessage> messages, List<GptTool<? extends AgentToolType>> gptTools) {
+    public Stream<GptToolResponse> getChatCompletionWithToolsStream(List<GptMessage> messages, List<GptTool<AgentToolType>> gptTools) {
         String model = System.getenv("OPENAI_MODEL");
         if (model == null || model.isEmpty()) {
             model = DEPLOYMENT_MODEL;
@@ -255,11 +255,11 @@ public class AzureOpenAiGptClient implements GPTClient {
         }).filter(r -> !r.isIntermediate()); // avoid intermediate chunks
     }
 
-    private List<ChatCompletionsToolDefinition> convertTools(List<GptTool<? extends AgentToolType>> gptTools) {
+    private List<ChatCompletionsToolDefinition> convertTools(List<GptTool<AgentToolType>> gptTools) {
         return gptTools.stream().map(this::convertTool).toList();
     }
 
-    private <T> ChatCompletionsToolDefinition convertTool(GptTool<T> gptTool) {
+    private <T extends AgentToolType> ChatCompletionsToolDefinition convertTool(GptTool<T> gptTool) {
         ChatCompletionsFunctionToolDefinitionFunction functionDefinition = new ChatCompletionsFunctionToolDefinitionFunction(gptTool.getName());
         functionDefinition.setDescription(gptTool.getDescription());
         functionDefinition.setParameters(BinaryData.fromObject(gptTool.getParameters()));

@@ -1,6 +1,7 @@
 package ua.ithillel.expensetracker.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ua.ithillel.expensetracker.dto.ExpenseDTO;
 import ua.ithillel.expensetracker.dto.PaginationDTO;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
+@Slf4j
 @Service
 public class ExpenseServiceDefault implements ExpenseService {
     private final ExpenseRepo expenseRepo;
@@ -26,8 +28,8 @@ public class ExpenseServiceDefault implements ExpenseService {
 
     @Override
     public List<ExpenseDTO> getExpensesByUserId(Long userId) {
-//        log.info("Get expense by id");
-//        log.debug("userId: " + userId);
+        log.info("Get expense by id");
+        log.debug("userId: " + userId);
 
         try {
 
@@ -67,6 +69,7 @@ public class ExpenseServiceDefault implements ExpenseService {
             paginationDTO.setData(expenseDTOS);
             paginationDTO.setSize(size);
             paginationDTO.setPage(page);
+            paginationDTO.setCount(byUser.getCount());
 
             return paginationDTO;
 
@@ -74,12 +77,13 @@ public class ExpenseServiceDefault implements ExpenseService {
 //            log.error(e.getMessage());
             throw new NotFoundServiceException(e.getMessage());
         }
+
     }
 
     @Override
     public ExpenseDTO createExpense(ua.ithillel.expensetracker.dto.ExpenseDTO expenseDTO) {
-//        log.info("createExpense");
-//        log.debug("expense: " + expenseDTO);
+        log.info("createExpense");
+        log.debug("expense: " + expenseDTO);
         try {
             Long userId = expenseDTO.getUserId();
             Optional<User> user = userRepo.find(userId);
@@ -104,7 +108,7 @@ public class ExpenseServiceDefault implements ExpenseService {
 
 
         } catch (ExpenseTrackerPersistingException e) {
-//            log.error(e.getMessage());
+            log.error(e.getMessage());
             throw new NotFoundServiceException(e.getMessage());
         }
     }
@@ -137,8 +141,6 @@ public class ExpenseServiceDefault implements ExpenseService {
             expense.setCategory(expenseCategory);
             expense.setUser(user);
 
-//            expense.getCategory().setExpenses(null);
-//            expense.getUser().setExpenses(null);
 
             Optional<Expense> saved = expenseRepo.save(expense);
             Expense udpdatedExpense = saved.orElseThrow(() -> new ServiceException("Expense could not be updated"));

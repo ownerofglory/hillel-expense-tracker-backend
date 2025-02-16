@@ -75,6 +75,7 @@ public class SmartExpenseGptService implements SmartExpenseService {
 
             ExpenseDTO expense = new ExpenseDTO();
             expense.setUserId(userId);
+            expense.setAmount(categorisingContent.getAmount());
             expense.setDescription(categorisingContent.getDescription());
             ExpenseCategory chosenCategory = foundCategory.orElseThrow(() -> new ServiceException("Category not found"));
             expense.setCategoryId(chosenCategory.getId());

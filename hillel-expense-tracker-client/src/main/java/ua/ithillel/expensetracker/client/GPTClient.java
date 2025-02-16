@@ -42,9 +42,8 @@ public interface GPTClient {
      * @param messages list of GptMessage objects
      * @param gptTools list of GptTools that can be called
      * @return GptToolResponse that contains either chat completion text or tool call
-     * @param <Tfunc> tool object type
      */
-    <Tfunc extends AgentToolType> GptToolResponse getChatCompletionWithTools(List<GptMessage> messages, List<GptTool<? extends AgentToolType>> gptTools);
+    GptToolResponse getChatCompletionWithTools(List<GptMessage> messages, List<GptTool<AgentToolType>> gptTools);
 
     /**
      * Creates a chat completion with a possible tool call.
@@ -54,7 +53,6 @@ public interface GPTClient {
      * @param messages list of GptMessage objects
      * @param gptTools list of GptTools that can be called
      * @return Stream of GptToolResponse chunks that contains either chat completion text or tool call
-     * @param <Tfunc> tool object type
      */
-    <Tfunc extends AgentToolType> Stream<GptToolResponse> getChatCompletionWithToolsStream(List<GptMessage> messages, List<GptTool<? extends AgentToolType>> gptTools);
+    Stream<GptToolResponse> getChatCompletionWithToolsStream(List<GptMessage> messages, List<GptTool<AgentToolType>> gptTools);
 }

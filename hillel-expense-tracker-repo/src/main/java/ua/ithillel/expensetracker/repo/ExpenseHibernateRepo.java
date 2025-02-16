@@ -58,8 +58,13 @@ public class ExpenseHibernateRepo implements ExpenseRepo {
     @Override
     public PaginationResponse<List<Expense>> findByUser(User user, PaginationReq paginationReq) throws ExpenseTrackerPersistingException {
         try (Session session = sessionFactory.openSession()) {
+            String countQ = "SELECT COUNT(e.id) FROM Expense e WHERE e.user = :user";
+            Query<Long> countQuery = session.createQuery(countQ, Long.class);
+            countQuery.setParameter("user", user);
+            Long countResults = countQuery.uniqueResult();
+
             Query<Expense> query
-                    = session.createQuery("SELECT e FROM Expense e WHERE e.user = :user", Expense.class);// JQL, HQL
+                    = session.createQuery("SELECT e FROM Expense e WHERE e.user = :user ORDER BY e.createdAt ASC ", Expense.class);// JQL, HQL
             query.setParameter("user", user);
             query.setMaxResults(paginationReq.getSize());
             query.setFirstResult(paginationReq.getSize() * (paginationReq.getPage() - 1));
@@ -70,6 +75,7 @@ public class ExpenseHibernateRepo implements ExpenseRepo {
             resp.setData(resultList);
             resp.setSize(resultList.size());
             resp.setPage(paginationReq.getPage());
+            resp.setCount(countResults);
 
             return resp;
         }

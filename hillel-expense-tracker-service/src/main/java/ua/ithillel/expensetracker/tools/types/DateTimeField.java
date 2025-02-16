@@ -1,19 +1,19 @@
-package ua.ithillel.expensetracker.tools;
+package ua.ithillel.expensetracker.tools.types;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class LongField {
+public class DateTimeField {
     @JsonProperty(value = "type")
-    private final String type = "number";
+    private final String type = "string";
 
     @JsonProperty(value = "description")
     private String description;
 
     @JsonCreator
-    LongField(@JsonProperty(value = "description") String description) {
+    public DateTimeField(@JsonProperty(value = "description") String description) {
         this.description = description;
     }
 }
