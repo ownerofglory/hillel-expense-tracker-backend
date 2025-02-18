@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: hillel-expense-tracker
+  name: {{ include "expense-tracker-config.fullname" . }}-openai-config
+data:
+  # property-like keys; each key maps to a simple value
+  openai_endpoint: "https://api.openai.com/v1/chat"

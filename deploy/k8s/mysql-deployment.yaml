@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: expense-tracker-mysql
+  namespace: hillel-expense-tracker
+  labels:
+    helm.sh/chart: expense-tracker-mysql-0.1.0
+    app.kubernetes.io/name: expense-tracker-mysql
+    app.kubernetes.io/instance: expense-tracker-mysql
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: expense-tracker-mysql
+      app.kubernetes.io/instance: expense-tracker-mysql
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: expense-tracker-mysql-0.1.0
+        app.kubernetes.io/name: expense-tracker-mysql
+        app.kubernetes.io/instance: expense-tracker-mysql
+        app.kubernetes.io/version: "1.16.0"
+        app.kubernetes.io/managed-by: Helm
+    spec:
+      containers:
+        - name: expense-tracker-mysql
+          image: "mysql:9.1.0"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: mysql
+              containerPort: 3306
+              protocol: TCP
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: root-password
+                  name: expense-tracker-mysql-secret
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  key: db-name
+                  name: expense-tracker-mysql-secret
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  key: db-username
+                  name: expense-tracker-mysql-secret
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: db-password
+                  name: expense-tracker-mysql-secret
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: expense-tracker-mysql
+      volumes:
+        - name: expense-tracker-mysql
+          persistentVolumeClaim:
+            claimName: expense-tracker-mysql-pvc
