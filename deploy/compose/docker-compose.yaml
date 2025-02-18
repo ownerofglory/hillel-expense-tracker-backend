@@ -1,0 +1,26 @@
+services:
+  expense-tracker-backend:
+    build: ../../
+    restart: always
+    ports:
+      - "8080:8080"
+    volumes:
+      - expense-tracker-backend:/tmp
+
+
+  expense-tracker-mysql:
+    image: mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: hilleldb
+      MYSQL_USER: hillel
+      MYSQL_PASSWORD: Hillel1234
+    volumes:
+      - expense-tracker-mysql:/var/lib/mysql
+
+volumes:
+  expense-tracker-mysql:
+  expense-tracker-backend:

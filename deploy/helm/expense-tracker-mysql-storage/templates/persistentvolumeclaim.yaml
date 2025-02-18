@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "expense-tracker-mysql-storage.fullname" . }}
+  namespace: hillel-expense-tracker
+  labels:
+   {{- include "expense-tracker-mysql-storage.labels" . | nindent 4 }}
+spec:
+  accessModes:
+    {{- range .Values.pvc.accessModes }}
+    -  {{ . }}
+    {{- end }}
+  storageClassName: {{ .Values.pvc.storageClassName }}
+  resources:
+    requests:
+      storage: {{ .Values.pvc.storage }}

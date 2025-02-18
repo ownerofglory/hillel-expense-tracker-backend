@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "expense-tracker-backend.fullname" . }}
+  labels:
+    {{- include "expense-tracker-backend.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "expense-tracker-backend.selectorLabels" . | nindent 4 }}
