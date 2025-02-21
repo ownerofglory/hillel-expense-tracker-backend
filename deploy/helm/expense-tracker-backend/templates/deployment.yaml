@@ -27,11 +27,6 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "expense-tracker-backend.serviceAccountName" . }}
-      {{- with .Values.podSecurityContext }}
-      securityContext:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           {{- with .Values.securityContext }}
@@ -44,14 +39,16 @@ spec:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
-          {{- with .Values.livenessProbe }}
-          livenessProbe:
+          {{- with .Values.env }}
+          env:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.readinessProbe }}
-          readinessProbe:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
+          startupProbe:
+            httpGet:
+              port: 8080
+              path: /tracker/api/v1/health
+            initialDelaySeconds: 15
+            periodSeconds: 5
           {{- with .Values.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
@@ -62,17 +59,5 @@ spec:
           {{- end }}
       {{- with .Values.volumes }}
       volumes:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
-      tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}

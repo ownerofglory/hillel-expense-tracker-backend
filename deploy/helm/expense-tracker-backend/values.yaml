@@ -7,11 +7,11 @@ replicaCount: 1
 
 # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
-  repository: nginx
+  repository: docker.io/ownerofglory/hillel-expense-tracker
   # This sets the pull policy for images.
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "latest"
 
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
@@ -54,7 +54,51 @@ service:
   # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
   type: ClusterIP
   # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
-  port: 80
+  port: 8080
+
+env:
+  - name: JDBC_DB_HOST
+    value: expense-tracker-mysql.hillel-expense-tracker.svc.cluster.local:3306
+  - name: JDBC_DB_NAME
+    valueFrom:
+      secretKeyRef:
+        name: expense-tracker-mysql-secret
+        key: db-name
+  - name: JDBC_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: expense-tracker-mysql-secret
+        key: db-password
+  - name: JDBC_USER
+    valueFrom:
+      secretKeyRef:
+        name: expense-tracker-mysql-secret
+        key: db-username
+  - name: MYSQL_DB_NAME
+    valueFrom:
+      secretKeyRef:
+        name: expense-tracker-mysql-secret
+        key: db-name
+  - name: MYSQL_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: expense-tracker-mysql-secret
+        key: db-password
+  - name: MYSQL_USER
+    valueFrom:
+      secretKeyRef:
+        name: expense-tracker-mysql-secret
+        key: db-username
+  - name: OPENAI_ENDPOINT
+    value: https://api.openai.com/v1/chat
+  - name: OPENAI_KEY
+    valueFrom:
+      secretKeyRef:
+        name: expense-tracker-openai-secret
+        key: api-key
+  - name: REGION
+    value: USA
+
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
@@ -99,7 +143,7 @@ readinessProbe:
 autoscaling:
   enabled: false
   minReplicas: 1
-  maxReplicas: 100
+  maxReplicas: 3
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 

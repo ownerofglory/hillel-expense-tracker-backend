@@ -1,0 +1,34 @@
+flowchart TD
+subgraph subGraph0["🔄 Backend Pod"]
+        BackendPod1["📦 Pod: expense-tracker-backend-1\n(Port 8080)"]
+        BackendPod2["📦 Pod: expense-tracker-backend-2\n(Port 8080)"]
+        BackendPod3["📦 Pod: expense-tracker-backend-3\n(Port 8080)"]
+    end
+    subgraph subGraph1["🛠️ Backend deployment"]
+        BackendDeploy["🚀 Deployment: expense-tracker-backend (Replicas: 3)"]
+        subGraph0
+    end
+    subgraph subGraph2["🔄 MySQL Pod"]
+        MySQLPod["🗄️ Pod: expense-tracker-mysql (Port 3306)"]
+    end
+    subgraph subGraph3["🗄️ Database deployment"]
+        MySQLDeploy["📀 Deployment: expense-tracker-mysql"]
+        subGraph2
+    end
+    subgraph subGraph4[" K8s Cluster (Namespace: hillel-expense-tracker)"]
+        Ingress
+        BackendService["🔄 Service: expense-tracker-backend\n(Load Balancer)"]
+        subGraph1
+        MySQLService["🔄 Service: expense-tracker-mysql"]
+        subGraph3
+    end
+    Client["🌍 External Client: web app, mobile app, desktop client"] -- "HTTP Request to example.com/tracker/api" --> Ingress["🛡️ Ingress Controller\n(example.com)"]
+    Ingress -- /tracker/api --> BackendService
+    BackendService -- Load Balancing --> BackendPod1 & BackendPod2 & BackendPod3
+    BackendPod1 --> MySQLService
+    BackendPod2 --> MySQLService
+    BackendPod3 --> MySQLService
+    MySQLService --> MySQLPod
+
+
+

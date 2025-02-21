@@ -22,7 +22,7 @@ public class JdbcConfig {
     private String jdbcDialect;
 
     @Bean
-    public JdbcTemplate dataSource() {
+    public JdbcTemplate jdbcDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(jdbcDriver);
         dataSource.setUrl(jdbcUrl);
