@@ -1,6 +1,7 @@
 package ua.ithillel.expensetracker.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import ua.ithillel.expensetracker.client.GPTClient;
 import ua.ithillel.expensetracker.dto.CategorisingResponseDTO;
@@ -38,6 +39,7 @@ public class SmartExpenseGptService implements SmartExpenseService {
     private final ImageConvertor imageConvertor;
 
     @Override
+    @PreAuthorize("#userId == authentication.principal.id")
     public ExpenseDTO suggestExpenseByPrompt(String prompt, Long userId) throws ServiceException {
         try {
             Optional<User> user = userRepo.find(userId);
@@ -89,6 +91,7 @@ public class SmartExpenseGptService implements SmartExpenseService {
     }
 
     @Override
+    @PreAuthorize("#userId == authentication.principal.id")
     public ExpenseDTO suggestExpenseByBillScan(InputStream billScanInputStream, Long userId) throws ServiceException {
         try {
             Optional<User> user = userRepo.find(userId);

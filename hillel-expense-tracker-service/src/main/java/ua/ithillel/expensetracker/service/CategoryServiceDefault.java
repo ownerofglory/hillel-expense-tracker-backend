@@ -2,6 +2,8 @@ package ua.ithillel.expensetracker.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import ua.ithillel.expensetracker.dto.ExpenseCategoryDTO;
 import ua.ithillel.expensetracker.exception.ExpenseTrackerPersistingException;
@@ -24,6 +26,7 @@ public class CategoryServiceDefault implements CategoryService {
     private final ExpenseCategoryMapper expenseCategoryMapper;
 
     @Override
+    @PreAuthorize("#userId == authentication.principal.id")
     public List<ExpenseCategoryDTO> findAllCategoriesByUserId(Long userId) throws ServiceException {
         try {
             Optional<User> userOpt = userRepo.find(userId);
@@ -41,6 +44,7 @@ public class CategoryServiceDefault implements CategoryService {
     }
 
     @Override
+    @PostAuthorize("#returnObject.userId == authentication.principal.id")
     public ExpenseCategoryDTO findCategoryById(Long id) throws ServiceException {
         try {
             Optional<ExpenseCategory> expenseCategoryOpt = expenseCategoryRepo.find(id);

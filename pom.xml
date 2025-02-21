@@ -25,6 +25,7 @@
         <module>hillel-expense-tracker-repo</module>
         <module>hillel-expense-tracker-web</module>
         <module>hillel-expense-tracker-web-boot</module>
+        <module>hillel-expense-tracker-security</module>
     </modules>
 
     <properties>

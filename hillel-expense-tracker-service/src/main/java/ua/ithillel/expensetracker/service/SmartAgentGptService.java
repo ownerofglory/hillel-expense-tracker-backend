@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import ua.ithillel.expensetracker.client.GPTClient;
 import ua.ithillel.expensetracker.client.tool.AgentToolType;
@@ -47,6 +48,7 @@ public class SmartAgentGptService implements SmartAgentService {
     private Map<String, AgentToolDef> tools;
 
     @Override
+    @PreAuthorize("#userId == authentication.principal.id")
     public Stream<GptToolResponse> getChatCompletionWithTools(List<GptMessage> messages, Long userId) {
         try {
             Optional<User> user = userRepo.find(userId);

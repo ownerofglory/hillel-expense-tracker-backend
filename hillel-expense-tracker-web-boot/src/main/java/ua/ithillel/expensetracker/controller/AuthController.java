@@ -1,17 +1,23 @@
 package ua.ithillel.expensetracker.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ua.ithillel.expensetracker.dto.LoginDTO;
 import ua.ithillel.expensetracker.dto.RegisterDTO;
 import ua.ithillel.expensetracker.dto.UserDTO;
+import ua.ithillel.expensetracker.service.AuthService;
 
 @RestController
 @RequestMapping("/v1/auth")
+@RequiredArgsConstructor
 public class AuthController {
+    private final AuthService authService;
+
     @PostMapping("/register")
     public ResponseEntity<UserDTO> register(@RequestBody RegisterDTO registerDTO) {
-        return ResponseEntity.ok().build();
+        UserDTO userDTO = authService.registerUser(registerDTO);
+        return ResponseEntity.ok(userDTO);
     }
 
     @PostMapping("/login")
