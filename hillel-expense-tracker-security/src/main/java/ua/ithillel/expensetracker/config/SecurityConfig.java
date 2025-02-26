@@ -23,6 +23,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(conf ->
                         conf
                                 .requestMatchers(antMatcher("/v1/auth/**")).permitAll()
+                                .requestMatchers(antMatcher("/v1/health")).permitAll()
                                 .anyRequest().authenticated())
                 .httpBasic(conf -> conf.authenticationEntryPoint(basicAuthEntryPoint));
 

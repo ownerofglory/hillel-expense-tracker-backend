@@ -3,7 +3,7 @@ services:
     depends_on:
       - expense-tracker-mysql
     build: ../../
-#    image: docker.io/ownerofglory/hillel-expense-tracker:latest
+    #    image: docker.io/ownerofglory/hillel-expense-tracker:latest
     restart: always
     ports:
       - "8080:8080"

@@ -10,8 +10,9 @@ COPY hillel-expense-tracker-client /app/hillel-expense-tracker-client
 COPY hillel-expense-tracker-dao /app/hillel-expense-tracker-dao
 COPY hillel-expense-tracker-repo /app/hillel-expense-tracker-repo
 COPY hillel-expense-tracker-service /app/hillel-expense-tracker-service
+COPY hillel-expense-tracker-security /app/hillel-expense-tracker-security
 COPY hillel-expense-tracker-web /app/hillel-expense-tracker-web
-COPY hillel-expense-tracker-web-boot /app/hillel--tracker-web-boot
+COPY hillel-expense-tracker-web-boot /app/hillel-expense-tracker-web-boot
 
 # Copy and prepare Maven wrapper
 COPY .mvn /app/.mvn

@@ -5,6 +5,8 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import ua.ithillel.expensetracker.model.GptMessage;
@@ -31,8 +33,11 @@ public class SmartAgentController {
     public SseEmitter getChatCompletion(@RequestParam("userId") Long userId,
                                         @RequestBody List<GptMessage> messages) {
         SseEmitter emitter = new SseEmitter();
+
+        final SecurityContext context = SecurityContextHolder.getContext();
         executor.execute(() -> {
             try {
+                SecurityContextHolder.setContext(context);
                 Stream<GptToolResponse> chatCompletionWithTools = smartAgentService.getChatCompletionWithTools(messages, userId);
 
                 chatCompletionWithTools.forEach(resp -> {

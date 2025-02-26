@@ -60,7 +60,8 @@ service:
 ingress:
   enabled: true
   className: "traefik"
-  annotations: {}
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
@@ -73,7 +74,10 @@ ingress:
                 number: 8080
           path: /tracker/api
           pathType: Prefix
-  tls: []
+  tls:
+    - hosts:
+        - kube.ownerofglory.com # Change by your domain
+      secretName: kube-ownerofglory-com-tls
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local

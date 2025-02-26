@@ -26,4 +26,8 @@ spec:
             pathType: Prefix
 
     {{- end }}
+  {{- with .Values.ingress.tls }}
+  tls:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 {{- end }}
