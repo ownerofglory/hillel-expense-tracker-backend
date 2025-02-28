@@ -29,7 +29,7 @@ public class ExpenseServiceDefault implements ExpenseService {
     private final ExpenseMapper expenseMapper;
 
     @Override
-    @PreAuthorize("#userId == authentication.principal.id")
+    @PreAuthorize("#userId == authentication.principal.id || hasRole('ROLE_ADMIN')")
     public List<ExpenseDTO> getExpensesByUserId(Long userId) {
         log.info("Get expense by id");
         log.debug("userId: " + userId);

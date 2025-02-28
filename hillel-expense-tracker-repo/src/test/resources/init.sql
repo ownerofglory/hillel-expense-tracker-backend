@@ -12,6 +12,7 @@ create table t_user
     last_name  varchar(100) default '' null,
     email      varchar(256) not null,
     password_hash VARCHAR(256) default '',
+    role VARCHAR(128) default 'ROLE_USER',
     birth_date date default '2000-01-01' not null,
     created_at datetime default NOW(),
     constraint t_user_email_unique unique (email)

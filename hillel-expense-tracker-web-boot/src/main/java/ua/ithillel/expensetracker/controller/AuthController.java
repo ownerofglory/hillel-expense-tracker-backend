@@ -3,6 +3,7 @@ package ua.ithillel.expensetracker.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ua.ithillel.expensetracker.dto.AuthDTO;
 import ua.ithillel.expensetracker.dto.LoginDTO;
 import ua.ithillel.expensetracker.dto.RegisterDTO;
 import ua.ithillel.expensetracker.dto.UserDTO;
@@ -21,8 +22,9 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserDTO> login(@RequestBody LoginDTO loginDTO) {
-        return ResponseEntity.ok().build();
+    public ResponseEntity<AuthDTO> login(@RequestBody LoginDTO loginDTO) {
+        AuthDTO authDTO = authService.authenticateUser(loginDTO);
+        return ResponseEntity.ok(authDTO);
     }
 
     @PostMapping("/logout")

@@ -8,3 +8,6 @@ logging:
     org.springframework.boot: INFO
     ua.ithillel.expensetracker.controller: DEBUG
     ua.ithillel.expensetracker: DEBUG
+
+jwt:
+  secret: ${JWT_KEY}

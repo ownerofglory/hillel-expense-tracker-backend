@@ -28,7 +28,7 @@ public class ExpenseControllerTest extends ControllerTestParent {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         expenseController = new ExpenseController(expenseService);
 

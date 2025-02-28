@@ -22,6 +22,7 @@ public class User extends AbstractModel {
     private String email;
     @Column(name = "password_hash")
     private String passwordHash;
+    private String role;
 
     @Transient
     private Set<ExpenseTag> tags;

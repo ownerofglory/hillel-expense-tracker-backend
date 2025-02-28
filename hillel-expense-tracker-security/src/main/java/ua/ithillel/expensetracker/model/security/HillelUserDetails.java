@@ -2,6 +2,7 @@ package ua.ithillel.expensetracker.model.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ua.ithillel.expensetracker.model.User;
 
@@ -18,7 +19,8 @@ public class HillelUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        String role = user.getRole();
+        return List.of(new SimpleGrantedAuthority(role));
     }
 
     @Override
