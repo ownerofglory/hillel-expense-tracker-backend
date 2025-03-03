@@ -8,16 +8,17 @@
 # You can also reference a tag or branch, but the action may change without warning.
 
 name: Deploy Kubernetes PROD
-on: [push]
-#  workflow_dispatch:
-#    inputs:
-#      tag:
-#        description: 'Image tag'
-#        required: true
-#        type: choice
-#        options:
-#          - main
-#          - latest
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Image tag'
+        required: true
+        type: choice
+        default: main
+        options:
+          - main
+          - latest
 
 jobs:
   deploy:
@@ -45,6 +46,4 @@ jobs:
         with:
           exec: |
             export KUBECONFIG=${{ github.workspace }}/.kube/config
-            helm upgrade --install expense-tracker-backend ./deploy/helm/expense-tracker-backend/ --namespace=${{ secrets.KUBERNETES_NAMESPACE }}
-#          kubeconfig: '${{ github.workspace }}/.kube/config'
-#          overrule_existing_kubeconfig: "true"
+            helm upgrade --install expense-tracker-backend ./deploy/helm/expense-tracker-backend/ --set image.tag=${{ github.event.inputs.tag }} --namespace=${{ secrets.KUBERNETES_NAMESPACE }}
