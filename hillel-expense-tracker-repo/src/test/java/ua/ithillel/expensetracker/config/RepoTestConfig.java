@@ -17,13 +17,13 @@ import java.util.Properties;
 public class RepoTestConfig {
     @Bean("emf")
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public EntityManagerFactory createEntityManagerFactory() {
+    public EntityManagerFactory entityManagerFactory() {
         return Persistence.createEntityManagerFactory("expense-tracker-test-pu");
     }
 
     @Bean("sf")
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public SessionFactory createSessionFactory() {
+    public SessionFactory sessionFactory() {
         org.hibernate.cfg.Configuration configuration = new org.hibernate.cfg.Configuration();
         Properties props = new Properties();
         props.put("hibernate.connection.driver_class", "org.h2.Driver");

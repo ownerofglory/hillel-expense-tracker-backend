@@ -2,21 +2,19 @@ package ua.ithillel.expensetracker.config;
 
 import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
-import com.azure.core.credential.KeyCredential;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Configuration
-@Profile("!test")
-public class OpenAiConfig {
+@Profile("test")
+public class OpenAiTestConfig {
+    public static final String TEST_ENDPOINT = "http://localhost:8080/chat";
+
     @Bean
-    public OpenAIClient getOpenAIClient() {
-        String openaiKey = System.getenv("OPENAI_KEY");
-        String openaiEndpoint = System.getenv("OPENAI_ENDPOINT");
+    public OpenAIClient openAIClient() {
         return new OpenAIClientBuilder()
-                .endpoint(openaiEndpoint)
-                .credential(new KeyCredential(openaiKey))
+                .endpoint(TEST_ENDPOINT)
                 .buildClient();
     }
 }

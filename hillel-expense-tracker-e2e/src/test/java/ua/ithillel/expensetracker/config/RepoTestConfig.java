@@ -1,38 +1,28 @@
 package ua.ithillel.expensetracker.config;
 
+
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.service.ServiceRegistry;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Scope;
 import ua.ithillel.expensetracker.model.*;
 
 import java.util.Properties;
 
 @Configuration
-@PropertySource("classpath:repo-config.properties")
-@Profile("!test")
-public class HibernateConfig {
-    @Value("${jdbc.user:def_user}")
-    private String jdbcUser;
-    @Value("${jdbc.password:}")
-    private String jdbcPassword;
-    @Value("${jdbc.driver:com.mysql.cj.jdbc.Driver}")
-    private String jdbcDriver;
-    @Value("${jdbc.url:}")
-    private String jdbcUrl;
-
-    @Bean
+public class RepoTestConfig {
+    @Bean("sf")
+    @Primary
+    @Scope(ConfigurableBeanFactory.SCOPE_SINGLETON)
     public SessionFactory sessionFactory() {
         org.hibernate.cfg.Configuration configuration = new org.hibernate.cfg.Configuration();
         Properties props = new Properties();
-        props.put("hibernate.connection.driver_class", jdbcDriver);
-        props.put("hibernate.connection.url", jdbcUrl);
-        props.put("hibernate.connection.username", jdbcUser);
-        props.put("hibernate.connection.password", jdbcPassword);
+        props.put("hibernate.connection.driver_class", "org.h2.Driver");
+        props.put("hibernate.connection.url", "jdbc:h2:mem:test_hibernate;INIT=runscript from 'classpath:init.sql'");
         props.put("hibernate.current_session_context_class", "thread");
 
         configuration.setProperties(props);
@@ -48,3 +38,4 @@ public class HibernateConfig {
         return configuration.buildSessionFactory(serviceRegistry);
     }
 }
+

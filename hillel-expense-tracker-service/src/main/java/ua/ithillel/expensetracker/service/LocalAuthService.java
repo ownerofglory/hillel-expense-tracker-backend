@@ -9,7 +9,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ua.ithillel.expensetracker.dto.AuthDTO;
@@ -37,7 +36,6 @@ public class LocalAuthService implements AuthService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
     private final AuthenticationManager authenticationManager;
-    private final UserDetailsService userDetailsService;
     private final JwtUtil jwtUtil;
 
     @Override

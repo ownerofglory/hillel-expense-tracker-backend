@@ -3,11 +3,13 @@ package ua.ithillel.expensetracker.config;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
+@Profile("!test")
 public class JpaConfig {
 //    @Bean(name = "jpaEMF")
     public EntityManagerFactory entityManagerFactory() {
