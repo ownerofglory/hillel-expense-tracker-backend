@@ -98,6 +98,11 @@ env:
         key: api-key
   - name: REGION
     value: USA
+  - name: JWT_KEY
+    valueFrom:
+      secretKeyRef:
+        name: expense-tracker-config-jwt-secret
+        key: jwt-key
 
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
