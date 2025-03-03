@@ -13,6 +13,7 @@ COPY hillel-expense-tracker-service /app/hillel-expense-tracker-service
 COPY hillel-expense-tracker-security /app/hillel-expense-tracker-security
 COPY hillel-expense-tracker-web /app/hillel-expense-tracker-web
 COPY hillel-expense-tracker-web-boot /app/hillel-expense-tracker-web-boot
+COPY hillel-expense-tracker-e2e /app/hillel-expense-tracker-e2e
 
 # Copy and prepare Maven wrapper
 COPY .mvn /app/.mvn
