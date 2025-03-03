@@ -43,6 +43,8 @@ jobs:
       - name: Deploy
         uses: WyriHaximus/github-action-helm3@v3
         with:
-          exec: helm upgrade --install expense-tracker-backend ./deploy/helm/expense-tracker-backend/ --namespace=${{ secrets.KUBERNETES_NAMESPACE }}
-          kubeconfig: '${{ github.workspace }}/.kube/config'
-          overrule_existing_kubeconfig: "true"
+          exec: |
+            export KUBECONFIG=${{ github.workspace }}/.kube/config
+            helm upgrade --install expense-tracker-backend ./deploy/helm/expense-tracker-backend/ --namespace=${{ secrets.KUBERNETES_NAMESPACE }}
+#          kubeconfig: '${{ github.workspace }}/.kube/config'
+#          overrule_existing_kubeconfig: "true"
