@@ -30,12 +30,11 @@ jobs:
         uses: actions/checkout@v4
       - name: Replace environment variables in task definition
         run: |
-          sed -i 's|$KUBERNETES_CA_DATA|'"${{ secrets.KUBERNETES_CA_DATA }}"'|g' .kube/config
-          sed -i 's|$KUBERNETES_CLUSTER_SERVER_URL|'"${{ secrets.KUBERNETES_CLUSTER_SERVER_URL }}"'|g' .kube/config
-          sed -i 's|$KUBERNETES_NAMESPACE|'"${{ secrets.KUBERNETES_NAMESPACE }}"'|g' .kube/config
-          sed -i 's|$KUBERNETES_CLIENT_CA_DATA|'"${{ secrets.KUBERNETES_CLIENT_CA_DATA }}"'|g' .kube/config
-          sed -i 's|$KUBERNETES_CLIENT_KEY_DATA|'"${{ secrets.KUBERNETES_CLIENT_KEY_DATA }}"'|g' .kube/config
-          cat .kube/config
+          sed -i 's|\$KUBERNETES_CA_DATA|'"${{ secrets.KUBERNETES_CA_DATA }}"'|g' .kube/config
+          sed -i 's|\$KUBERNETES_CLUSTER_SERVER_URL|'"${{ secrets.KUBERNETES_CLUSTER_SERVER_URL }}"'|g' .kube/config
+          sed -i 's|\$KUBERNETES_NAMESPACE|'"${{ secrets.KUBERNETES_NAMESPACE }}"'|g' .kube/config
+          sed -i 's|\$KUBERNETES_CLIENT_CA_DATA|'"${{ secrets.KUBERNETES_CLIENT_CA_DATA }}"'|g' .kube/config
+          sed -i 's|\$KUBERNETES_CLIENT_KEY_DATA|'"${{ secrets.KUBERNETES_CLIENT_KEY_DATA }}"'|g' .kube/config
 
       - name: Deploy
         uses: WyriHaximus/github-action-helm3@v3
