@@ -1,0 +1,45 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+# GitHub recommends pinning actions to a commit SHA.
+# To get a newer version, you will need to update the SHA.
+# You can also reference a tag or branch, but the action may change without warning.
+
+name: Deploy Kubernetes PROD
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Image tag'
+        required: true
+        type: choice
+        default: main
+        options:
+          - main
+          - latest
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Replace environment variables in task definition
+        run: |
+          sed -i 's|\$KUBERNETES_CA_DATA|'"${{ secrets.KUBERNETES_CA_DATA }}"'|g' .kube/config
+          sed -i 's|\$KUBERNETES_CLUSTER_SERVER_URL|'"${{ secrets.KUBERNETES_CLUSTER_SERVER_URL }}"'|g' .kube/config
+          sed -i 's|\$KUBERNETES_NAMESPACE|'"${{ secrets.KUBERNETES_NAMESPACE }}"'|g' .kube/config
+          sed -i 's|\$KUBERNETES_CLIENT_CA_DATA|'"${{ secrets.KUBERNETES_CLIENT_CA_DATA }}"'|g' .kube/config
+          sed -i 's|\$KUBERNETES_CLIENT_KEY_DATA|'"${{ secrets.KUBERNETES_CLIENT_KEY_DATA }}"'|g' .kube/config
+
+      - name: Deploy
+        uses: WyriHaximus/github-action-helm3@v3
+        with:
+          exec: |
+            export KUBECONFIG=${{ github.workspace }}/.kube/config
+            helm upgrade --install expense-tracker-backend ./deploy/helm/expense-tracker-backend/ --set image.tag=${{ github.event.inputs.tag }} --namespace=${{ secrets.KUBERNETES_NAMESPACE }}
