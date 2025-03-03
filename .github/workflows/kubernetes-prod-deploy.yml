@@ -35,6 +35,7 @@ jobs:
           sed -i 's|$KUBERNETES_NAMESPACE|'"${{ secrets.KUBERNETES_NAMESPACE }}"'|g' .kube/config
           sed -i 's|$KUBERNETES_CLIENT_CA_DATA|'"${{ secrets.KUBERNETES_CLIENT_CA_DATA }}"'|g' .kube/config
           sed -i 's|$KUBERNETES_CLIENT_KEY_DATA|'"${{ secrets.KUBERNETES_CLIENT_KEY_DATA }}"'|g' .kube/config
+          echo .kube/config
 
       - name: Deploy
         uses: WyriHaximus/github-action-helm3@v3
