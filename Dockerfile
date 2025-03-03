@@ -10,6 +10,7 @@ COPY hillel-expense-tracker-client /app/hillel-expense-tracker-client
 COPY hillel-expense-tracker-dao /app/hillel-expense-tracker-dao
 COPY hillel-expense-tracker-repo /app/hillel-expense-tracker-repo
 COPY hillel-expense-tracker-service /app/hillel-expense-tracker-service
+COPY hillel-expense-tracker-security /app/hillel-expense-tracker-security
 COPY hillel-expense-tracker-web /app/hillel-expense-tracker-web
 COPY hillel-expense-tracker-web-boot /app/hillel-expense-tracker-web-boot
 
@@ -26,10 +27,10 @@ RUN ./mvnw clean package -DskipTests
 FROM openjdk:23-slim
 
 # Multistage
-COPY --from=build /app/hillel-expense-tracker-web-boot/target/hillel-expense-tracker-web-boot-1.0-SNAPSHOT-jar-with-dependencies.jar /app/app.jar
+COPY --from=build /app/hillel-expense-tracker-web-boot/target/hillel-expense-tracker-web-boot-1.0-SNAPSHOT.jar /app/app.jar
 
 #COPY hillel-expense-tracker-web-boot/target/hillel-expense-tracker-web-boot-1.0-SNAPSHOT-jar-with-dependencies.jar /app/app.jar
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "/app/app.jar"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]

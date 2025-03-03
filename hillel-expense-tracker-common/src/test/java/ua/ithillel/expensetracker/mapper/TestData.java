@@ -25,7 +25,7 @@ public class TestData {
     public static final String EXPENSE_CAT_NAME = "Utilities";
     public static final Set<ExpenseTagDTO> TAGS = Collections.emptySet();
 
-    public static final User USER = new User(FIRST_NAME, LAST_NAME, EMAIL, new HashSet<>(), new HashSet<>(), new HashSet<>());
+    public static final User USER = new User(FIRST_NAME, LAST_NAME, EMAIL, "", "ROLE_USER", new HashSet<>(), new HashSet<>(), new HashSet<>());
     public static final UserDTO USER_DTO = new UserDTO(FIRST_NAME, LAST_NAME, EMAIL);
 
     public static final ExpenseCategory EXPENSE_CATEGORY = new ExpenseCategory(EXPENSE_CAT_NAME, new HashSet<>(), new User());

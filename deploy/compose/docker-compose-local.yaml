@@ -1,0 +1,39 @@
+services:
+  expense-tracker-backend:
+    depends_on:
+      - expense-tracker-mysql
+    build: ../../
+    restart: always
+    ports:
+      - "8080:8080"
+    volumes:
+      - expense-tracker-backend:/tmp
+    environment:
+      JDBC_DB_HOST: expense-tracker-mysql:3306
+      JDBC_DB_NAME: <db_name>
+      JDBC_PASSWORD: <db_password>
+      JDBC_USER: <db_user>
+      MYSQL_DB_NAME: <db_name>
+      MYSQL_PASSWORD: <db_password>
+      MYSQL_USER: <db_user>
+      OPENAI_ENDPOINT: https://api.openai.com/v1/chat
+      OPENAI_KEY: <OPENAI_KEY>
+      REGION: USA
+
+
+  expense-tracker-mysql:
+    image: mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: <db_root_password>
+      MYSQL_DATABASE: <db_name>
+      MYSQL_USER: <db_user>
+      MYSQL_PASSWORD: <db_password>
+    volumes:
+      - expense-tracker-mysql:/var/lib/mysql
+
+volumes:
+  expense-tracker-mysql:
+  expense-tracker-backend:

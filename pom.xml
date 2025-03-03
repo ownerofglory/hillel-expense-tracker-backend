@@ -25,9 +25,13 @@
         <module>hillel-expense-tracker-repo</module>
         <module>hillel-expense-tracker-web</module>
         <module>hillel-expense-tracker-web-boot</module>
+        <module>hillel-expense-tracker-security</module>
+        <module>hillel-expense-tracker-e2e</module>
     </modules>
 
     <properties>
+        <app.version>default</app.version>
+
         <maven.compiler.source>22</maven.compiler.source>
         <maven.compiler.target>22</maven.compiler.target>
         <maven.compiler.release>22</maven.compiler.release>
@@ -53,7 +57,9 @@
         <twelve-monkeys.imageoio.version>3.12.0</twelve-monkeys.imageoio.version>
         <jakarta.servlet-api.version>6.1.0</jakarta.servlet-api.version>
         <spring.version>6.2.2</spring.version>
+        <spring.security-test.version>6.4.3</spring.security-test.version>
         <aspectj.version>1.9.22.1</aspectj.version>
+        <jjwt.version>0.12.6</jjwt.version>
     </properties>
 
     <dependencyManagement>
@@ -132,16 +138,11 @@
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-slf4j2-impl</artifactId>
-                <version>${log4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.logging.log4j</groupId>
-                <artifactId>log4j-slf4j2-impl</artifactId>
-                <version>${log4j.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.apache.logging.log4j</groupId>-->
+<!--                <artifactId>log4j-slf4j2-impl</artifactId>-->
+<!--                <version>${log4j.version}</version>-->
+<!--            </dependency>-->
             <dependency>
                 <groupId>com.azure</groupId>
                 <artifactId>azure-ai-openai</artifactId>
@@ -190,6 +191,12 @@
                 <version>${spring.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-test</artifactId>
+                <version>${spring.security-test.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
                 <groupId>jakarta.servlet</groupId>
                 <artifactId>jakarta.servlet-api</artifactId>
                 <version>${jakarta.servlet-api.version}</version>
@@ -205,6 +212,23 @@
                 <artifactId>aspectjweaver</artifactId>
                 <version>${aspectj.version}</version>
             </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-impl</artifactId>
+                <version>${jjwt.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-jackson</artifactId>
+                <version>${jjwt.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-api</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -212,12 +236,23 @@
         <pluginManagement>
             <plugins>
                 <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <configuration>
+                        <!-- Optionally, you can set the main class explicitly -->
+                        <mainClass>ua.ithillel.expensetracker.MainApplication</mainClass>
+                    </configuration>
+                </plugin>
+                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <configuration>
                         <source>${maven.compiler.source}</source>
                         <target>${maven.compiler.target}</target>
                         <release>${maven.compiler.release}</release>
+<!--                        <compilerArgs>-->
+<!--                            <AappVersion>${app.version}</AappVersion>-->
+<!--                        </compilerArgs>-->
                         <annotationProcessorPaths>
                             <path>
                                 <groupId>org.projectlombok</groupId>

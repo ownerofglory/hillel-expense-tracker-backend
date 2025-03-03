@@ -20,6 +20,9 @@ public class User extends AbstractModel {
     @Column(name = "last_name")
     private String lastname;
     private String email;
+    @Column(name = "password_hash")
+    private String passwordHash;
+    private String role;
 
     @Transient
     private Set<ExpenseTag> tags;

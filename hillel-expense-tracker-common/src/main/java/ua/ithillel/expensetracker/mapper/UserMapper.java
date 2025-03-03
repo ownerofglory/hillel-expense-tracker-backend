@@ -6,7 +6,7 @@ import org.mapstruct.factory.Mappers;
 import ua.ithillel.expensetracker.dto.UserDTO;
 import ua.ithillel.expensetracker.model.User;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface UserMapper {
 
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);

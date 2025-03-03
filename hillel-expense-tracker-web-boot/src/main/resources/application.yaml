@@ -7,15 +7,7 @@ logging:
   level:
     org.springframework.boot: INFO
     ua.ithillel.expensetracker.controller: DEBUG
-    ua.ithillel.expensetracker: INFO
+    ua.ithillel.expensetracker: DEBUG
 
-management:
-  server:
-    port: 8081
-    address: localhost
-  endpoints:
-  endpoint:
-    beans:
-      access: read_only
-    metrics:
-      access: unrestricted
+jwt:
+  secret: ${JWT_KEY}

@@ -173,7 +173,11 @@ public class AzureOpenAiGptClient implements GPTClient {
             return gptToolResponse;
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
+        } catch (Exception e) {
+            System.out.println();
+            return null;
         }
+
     }
 
     @Override

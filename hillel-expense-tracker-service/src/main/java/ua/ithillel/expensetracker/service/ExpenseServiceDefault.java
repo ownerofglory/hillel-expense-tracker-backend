@@ -2,6 +2,8 @@ package ua.ithillel.expensetracker.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import ua.ithillel.expensetracker.dto.ExpenseDTO;
 import ua.ithillel.expensetracker.dto.PaginationDTO;
@@ -27,6 +29,7 @@ public class ExpenseServiceDefault implements ExpenseService {
     private final ExpenseMapper expenseMapper;
 
     @Override
+    @PreAuthorize("#userId == authentication.principal.id || hasRole('ROLE_ADMIN')")
     public List<ExpenseDTO> getExpensesByUserId(Long userId) {
         log.info("Get expense by id");
         log.debug("userId: " + userId);
@@ -50,6 +53,7 @@ public class ExpenseServiceDefault implements ExpenseService {
     }
 
     @Override
+    @PreAuthorize("#userId == authentication.principal.id")
     public PaginationDTO<List<ExpenseDTO>> getExpensesByUserId(Long userId, int page, int size) {
         try {
 
@@ -81,6 +85,7 @@ public class ExpenseServiceDefault implements ExpenseService {
     }
 
     @Override
+    @PreAuthorize("#expenseDTO.userId == authentication.principal.id")
     public ExpenseDTO createExpense(ua.ithillel.expensetracker.dto.ExpenseDTO expenseDTO) {
         log.info("createExpense");
         log.debug("expense: " + expenseDTO);
@@ -114,6 +119,7 @@ public class ExpenseServiceDefault implements ExpenseService {
     }
 
     @Override
+    @PostAuthorize("returnObject.userId == authentication.principal.id")
     public ExpenseDTO getExpenseById(Long id) {
         try {
             Optional<Expense> expense = expenseRepo.find(id);
@@ -126,6 +132,7 @@ public class ExpenseServiceDefault implements ExpenseService {
     }
 
     @Override
+    @PreAuthorize("#expenseDTO.userId == authentication.principal.id")
     public ExpenseDTO updateExpense(Long id, ExpenseDTO expenseDTO) {
         try {
             Optional<Expense> expenseOpt = expenseRepo.find(id);

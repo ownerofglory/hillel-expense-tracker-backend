@@ -6,6 +6,7 @@ import org.hibernate.service.ServiceRegistry;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import ua.ithillel.expensetracker.model.*;
 
@@ -13,14 +14,15 @@ import java.util.Properties;
 
 @Configuration
 @PropertySource("classpath:repo-config.properties")
+@Profile("!test")
 public class HibernateConfig {
     @Value("${jdbc.user:def_user}")
     private String jdbcUser;
-    @Value("${jdbc.password}")
+    @Value("${jdbc.password:}")
     private String jdbcPassword;
-    @Value("${jdbc.driver}")
+    @Value("${jdbc.driver:com.mysql.cj.jdbc.Driver}")
     private String jdbcDriver;
-    @Value("${jdbc.url}")
+    @Value("${jdbc.url:}")
     private String jdbcUrl;
 
     @Bean

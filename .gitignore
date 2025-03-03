@@ -201,3 +201,6 @@ README.html
 .exercism
 
 .run
+.env
+.smarttomcat
+logs
