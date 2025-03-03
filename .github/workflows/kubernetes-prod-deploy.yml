@@ -37,10 +37,6 @@ jobs:
           sed -i 's|\$KUBERNETES_CLIENT_CA_DATA|'"${{ secrets.KUBERNETES_CLIENT_CA_DATA }}"'|g' .kube/config
           sed -i 's|\$KUBERNETES_CLIENT_KEY_DATA|'"${{ secrets.KUBERNETES_CLIENT_KEY_DATA }}"'|g' .kube/config
 
-      - name: Validate Kubeconfig
-        run: |
-          kubectl --kubeconfig=.kube/config config view --minify --flatten
-
       - name: Deploy
         uses: WyriHaximus/github-action-helm3@v3
         with:
