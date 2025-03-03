@@ -10,7 +10,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 @Configuration
 @PropertySource("classpath:dao-config.properties")
-@Profile("prod")
+@Profile("!test")
 public class JdbcConfig {
     @Value("${jdbc.user:def_user}")
     private String jdbcUser;
