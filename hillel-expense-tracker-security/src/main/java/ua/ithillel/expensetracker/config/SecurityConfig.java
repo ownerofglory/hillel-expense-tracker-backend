@@ -8,6 +8,7 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -76,7 +77,7 @@ public class SecurityConfig {
 //        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         http
-                .csrf(conf -> conf.disable())
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(conf ->
                         conf
                                 .requestMatchers(antMatcher("/v1/auth/**")).permitAll()

@@ -15,12 +15,11 @@ import ua.ithillel.expensetracker.repo.UserRepo;
 import ua.ithillel.expensetracker.util.JwtUtil;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Component
 public class GoogleAuthSuccessHandler implements AuthenticationSuccessHandler {
-    private final static String SUCCESS_REDIRECT_URL = System.getenv("AUTH_SUCCESS_REDIRECT_URL");
+    private static final String SUCCESS_REDIRECT_URL = System.getenv("AUTH_SUCCESS_REDIRECT_URL");
 
     private final JwtUtil jwtUtil;
     private final UserRepo userRepo;
@@ -32,33 +31,38 @@ public class GoogleAuthSuccessHandler implements AuthenticationSuccessHandler {
         OAuth2User principal = (OAuth2User) authentication.getPrincipal();
         String email = principal.getAttribute("email");
         String fullName = principal.getAttribute("name");
-        User user = null;
 
+        User user = getOrCreateUser(email, fullName);
+        if (user == null) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "User could not be created.");
+            return;
+        }
+
+        String token = jwtUtil.generateToken(new HillelUserDetails(user));
+        response.sendRedirect(SUCCESS_REDIRECT_URL + "/" + token);
+    }
+
+    private User getOrCreateUser(String email, String fullName) {
         try {
-            Optional<User> userOpt = userRepo.findByEmail(email);
-            user = userOpt.orElseGet(() -> {
-                try {
-                    User newUser = new User();
-                    newUser.setEmail(email);
-                    String[] nameLastname = fullName.split(" ");
-                    newUser.setFirstname(nameLastname[0]);
-                    newUser.setLastname(nameLastname[1]);
+            return userRepo.findByEmail(email).orElseGet(() -> createUser(email, fullName));
+        } catch (ExpenseTrackerPersistingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-                    Optional<User> saved = userRepo.save(newUser);
+    private User createUser(String email, String fullName) {
+        try {
+            User newUser = new User();
+            newUser.setEmail(email);
+            newUser.setRole("ROLE_USER");
 
-                    return saved.get();
+            String[] nameParts = fullName.split(" ", 2);
+            newUser.setFirstname(nameParts.length > 0 ? nameParts[0] : "");
+            newUser.setLastname(nameParts.length > 1 ? nameParts[1] : "");
 
-                } catch (ExpenseTrackerPersistingException e) {
-                    return null;
-                }
-            });
-
-        } catch (Exception e) {
-
-        } finally {
-            String token = jwtUtil.generateToken(new HillelUserDetails(user));
-
-            response.sendRedirect(SUCCESS_REDIRECT_URL + "?jwt=" + token);
+            return userRepo.save(newUser).orElse(null);
+        } catch (ExpenseTrackerPersistingException e) {
+            return null;
         }
     }
 }
