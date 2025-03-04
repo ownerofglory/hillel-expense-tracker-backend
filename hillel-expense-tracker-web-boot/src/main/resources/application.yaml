@@ -11,3 +11,17 @@ logging:
 
 jwt:
   secret: ${JWT_KEY}
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID:}
+            client-secret: ${GOOGLE_CLIENT_SECRET:}
+            authorization-grant-type: ${GOOGLE_AUTH_GRANT_TYPE:client_credentials}
+            redirect-uri: ${GOOGLE_REDIRECT_URL:http://localhost:8080/tracker/api/v1/auth/google/callback}
+        provider:
+          google:
+            token-uri: ${GOOGLE_TOKEN_URL:https://oauth2.googleapis.com/token}
