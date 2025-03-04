@@ -103,6 +103,26 @@ env:
       secretKeyRef:
         name: expense-tracker-config-jwt-secret
         key: jwt-key
+  - name: AUTH_SUCCESS_REDIRECT_URL
+    valueFrom:
+      configMapKeyRef:
+        name: expense-tracker-config-oauth2-config
+        key: google_redirect_url
+  - name: GOOGLE_AUTH_GRANT_TYPE
+    valueFrom:
+      secretKeyRef:
+        name: expense-tracker-config-oauth2-secret
+        key: google-auth-grant-type
+  - name: GOOGLE_CLIENT_ID
+    valueFrom:
+      secretKeyRef:
+        name: expense-tracker-config-oauth2-secret
+        key: google-client-id
+  - name: GOOGLE_CLIENT_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: expense-tracker-config-oauth2-secret
+        key:  google-client-secret
 
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.openid.connect.sdk.OIDCResponseTypeValue;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
@@ -25,10 +26,11 @@ import java.util.Set;
 
 @RequiredArgsConstructor
 @Component
+@Profile("!test")
 public class GoogleAccessResponseClient implements OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> {
     private final HttpClient httpClient;
 
-    @Value("${spring.security.oauth2.client.provider.google.token-uri}")
+    @Value("${spring.security.oauth2.client.provider.google.token-uri:}")
     private String tokenUrl;
 
     @Override
